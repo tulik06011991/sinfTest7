@@ -6,5 +6,5 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' }); // Yuklangan fayllar uchun papka
 
 // Word faylini yuklash va savollarni saqlash uchun marshrut
-router.post('/upload', upload.single('file'), quizController.uploadQuiz);
+router.post('/upload', upload.single('file'), quizController.extractAndSave);
 module.exports = router;

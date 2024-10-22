@@ -1,63 +1,82 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "../App.css"
 
-const UploadQuiz = () => {
-  const [file, setFile] = useState(null);
+const FileUpload = () => {
+    // Fan ID va faylni state orqali boshqarish
+    const [fanId, setFanId] = useState('');
+    const [file, setFile] = useState(null);
+    const [message, setMessage] = useState('');
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+    // Fan ID o'zgarishi
+    const handleFanIdChange = (e) => {
+        setFanId(e.target.value);
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    // Fayl tanlanishi
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
 
-    if (!file) {
-      alert("Iltimos, faylni tanlang.");
-      return;
-    }
+    // Formani yuborish
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('file', file);
+        if (!fanId || !file) {
+            setMessage('Iltimos, fanID va faylni kiriting');
+            return;
+        }
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/quiz/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        // FormData yaratish
+        const formData = new FormData();
+        formData.append('fanId', fanId);
+        formData.append('file', file);
 
-      console.log('Fayl muvaffaqiyatli yuklandi', response.data);
-      alert('Fayl muvaffaqiyatli yuklandi!');
-    } catch (error) {
-      console.error('Fayl yuklashda xatolik:', error);
-      alert('Fayl yuklashda xatolik yuz berdi.');
-    }
-  };
+        try {
+            // POST so'rovi orqali faylni yuklash
+            const res = await axios.post('http://localhost:5000/api/quiz/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-  return (
-    <div className="container mx-auto my-10">
-      <form onSubmit={handleSubmit} className="space-y-4">
+            setMessage('Fayl muvaffaqiyatli yuklandi!');
+        } catch (err) {
+            console.error(err);
+            setMessage('Faylni yuklashda xatolik yuz berdi!');
+        }
+    };
+
+    return (
         <div>
-          <label className="block text-sm font-medium text-gray-700">Word fayl yuklash:</label>
-          <input 
-            type="file" 
-            onChange={handleFileChange} 
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            accept=".doc,.docx"
-            required
-          />
-        </div>
+            <h2>Fan ID va fayl yuklash</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="fanId">Fan ID:</label>
+                    <input
+                        type="text"
+                        id="fanId"
+                        value={fanId}
+                        onChange={handleFanIdChange}
+                        required
+                    />
+                </div>
 
-        <button 
-          type="submit" 
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-        >
-          Yuklash
-        </button>
-      </form>
-    </div>
-  );
+                <div>
+                    <label htmlFor="file">Fayl yuklang:</label>
+                    <input
+                        type="file"
+                        id="file"
+                        onChange={handleFileChange}
+                        required
+                    />
+                </div>
+
+                <button type="submit">Yuklash</button>
+            </form>
+
+            {message && <p>{message}</p>}
+        </div>
+    );
 };
 
-export default UploadQuiz;
+export default FileUpload;
