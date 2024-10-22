@@ -2,7 +2,7 @@ const fs = require('fs');
 const mammoth = require('mammoth');
 const Question = require('../models/Questions');
 const Option = require('../models/Options');
-const Subject = require('../models/Questions');
+const Subject = require('../models/Subject');
 
 // Word faylini yuklab, JSON formatga o'tkazish va savollarni va variantlarni ajratish
 exports.uploadQuiz = async (req, res) => {
