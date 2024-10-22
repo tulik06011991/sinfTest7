@@ -14,7 +14,7 @@ const AdminCRUD = () => {
   const [currentAdminId, setCurrentAdminId] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null) ;
+  const [error, setError] = useState(null);
 
   // Adminlar ro'yxatini olish
   useEffect(() => {
@@ -108,14 +108,15 @@ const AdminCRUD = () => {
     });
   };
 
-  if (loading) return <p>Yuklanmoqda...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="text-center">Yuklanmoqda...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div>
-      <h1>Admin CRUD Paneli</h1>
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-3xl font-bold text-center mb-6">Admin CRUD Paneli</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-4">
+        <h2 className="text-xl font-semibold mb-4">{editing ? "Adminni tahrirlash" : "Yangi admin yaratish"}</h2>
         <input
           type="text"
           name="name"
@@ -123,6 +124,7 @@ const AdminCRUD = () => {
           value={formData.name}
           onChange={handleChange}
           required
+          className="border border-gray-300 p-2 rounded w-full mb-4"
         />
         <input
           type="email"
@@ -131,6 +133,7 @@ const AdminCRUD = () => {
           value={formData.email}
           onChange={handleChange}
           required
+          className="border border-gray-300 p-2 rounded w-full mb-4"
         />
         <input
           type="password"
@@ -139,8 +142,9 @@ const AdminCRUD = () => {
           value={formData.password}
           onChange={handleChange}
           required={!editing} // Tahrirlashda parol bo'sh bo'lishi mumkin
+          className="border border-gray-300 p-2 rounded w-full mb-4"
         />
-        <select name="role" value={formData.role} onChange={handleChange}>
+        <select name="role" value={formData.role} onChange={handleChange} className="border border-gray-300 p-2 rounded w-full mb-4">
           <option value="admin">Admin</option>
           <option value="superadmin">Superadmin</option>
         </select>
@@ -151,21 +155,31 @@ const AdminCRUD = () => {
           value={formData.subject}
           onChange={handleChange}
           required
+          className="border border-gray-300 p-2 rounded w-full mb-4"
         />
-        <button type="submit">
+        <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200 w-full">
           {editing ? "Yangilash" : "Yaratish"}
         </button>
       </form>
 
-      {message && <p>{message}</p>}
+      {message && <p className="text-center text-green-500 mb-4">{message}</p>}
 
-      <h2>Adminlar Ro'yxati</h2>
-      <ul>
+      <h2 className="text-2xl font-semibold mb-4">Adminlar Ro'yxati</h2>
+      <ul className="bg-white rounded-lg shadow-md">
         {admins.map((admin) => (
-          <li key={admin._id}>
-            {admin.name} ({admin.email}) - {admin.role} ({admin.subject})
-            <button onClick={() => editAdmin(admin)}>Tahrirlash</button>
-            <button onClick={() => deleteAdmin(admin._id)}>O'chirish</button>
+          <li key={admin._id} className="flex justify-between items-center p-4 border-b border-gray-300">
+            <div>
+              <h3 className="font-bold">{admin.name}</h3>
+              <p>{admin.email} - {admin.role} ({admin.subject})</p>
+            </div>
+            <div className="flex space-x-2">
+              <button onClick={() => editAdmin(admin)} className="bg-yellow-500 text-white p-1 rounded hover:bg-yellow-600">
+                Tahrirlash
+              </button>
+              <button onClick={() => deleteAdmin(admin._id)} className="bg-red-500 text-white p-1 rounded hover:bg-red-600">
+                O'chirish
+              </button>
+            </div>
           </li>
         ))}
       </ul>
