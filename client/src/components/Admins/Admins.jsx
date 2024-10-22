@@ -69,6 +69,8 @@ const AdminCRUD = () => {
       // Yangi admin yaratish
       try {
         const response = await axios.post("http://localhost:5000/admin/admin", formData);
+        console.log(response.data)
+        
         setAdmins([...admins, response.data]);
         setMessage("Admin muvaffaqiyatli yaratildi!");
         setFormData({
