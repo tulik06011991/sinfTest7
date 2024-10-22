@@ -6,6 +6,7 @@ const quizRoutes = require('./Routes/faylYuklash');
 const adminFan = require('./Routes/AdminFan')
 const auth = require('./Routes/Auth')
 const savollar = require('./Routes/savollar')
+const admins = require('./Routes/Admins')
 
 
 // Konfiguratsiyani yuklash
@@ -31,6 +32,7 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/fan', adminFan);
 app.use('/auth', auth); 
 app.use('/api', savollar)
+app.use('/admin', admins)
 
 // 404 sahifa topilmagan holat
 app.use((req, res, next) => {
