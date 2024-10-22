@@ -14,8 +14,16 @@ const Login = () => {
             const userData = { email, password };
             const response = await axios.post('http://localhost:5000/auth/login', userData);
             console.log(response.data);
-            localStorage.setItem('token', response.data.token) // Kirgan foydalanuvchi ma'lumotlarini ko'rish
-            // Kirganidan keyin foydalanuvchini yo'naltirish mumkin
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('url', response.data.redirectUrl); // Kirgan foydalanuvchi ma'lumotlarini ko'rish
+
+            // Foydalanuvchini kerakli sahifaga yo'naltirish
+            const redirectUrl = response.data.redirectUrl;
+            if (redirectUrl === '/savolJavoblar') {
+                window.location.href = '/test'; // Savol javoblar sahifasiga yo'naltirish
+            } else if (redirectUrl === '/admin/dashboard') {
+                window.location.href = '/admin/dashboard'; // Admin paneliga yo'naltirish
+            }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
         }
