@@ -14,8 +14,6 @@ const QuizComponent = () => {
             try {
                 const response = await axios.get("http://localhost:5000/test/fanlar");
                 setFanlar(response.data);
-                console.log(response.data)
-                
             } catch (error) {
                 console.error("Fanlarni olishda xatolik yuz berdi.");
             }
@@ -28,13 +26,12 @@ const QuizComponent = () => {
         setSelectedFan(fanId);
         try {
             const response = await axios.get(`http://localhost:5000/test/savollar/${fanId}`);
-           
             setSavollar(response.data);
         } catch (error) {
             console.error("Savollarni olishda xatolik yuz berdi.");
         }
     };
-    console.log(savollar)
+
     // Javoblarni belgilash
     const handleAnswerChange = (questionId, optionId) => {
         setAnswers((prevAnswers) => ({
@@ -47,10 +44,10 @@ const QuizComponent = () => {
     const handleSubmit = async () => {
         try {
             const response = await axios.post("http://localhost:5000/test/tekshirJavoblar", {
-                answers: Object.keys(answers).map(questionId => ({
+                answers: Object.keys(answers).map((questionId) => ({
                     questionId,
-                    selectedOption: answers[questionId]
-                }))
+                    selectedOption: answers[questionId],
+                })),
             });
             setResult(response.data);
         } catch (error) {
@@ -59,58 +56,72 @@ const QuizComponent = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Fanlarni tanlang</h1>
-            <select onChange={(e) => handleFanChange(e.target.value)}>
-                <option value="">Fan tanlang</option>
-                {fanlar.map((fan) => (
-                    <option key={fan._id} value={fan._id}>
-                        {fan.fanNomi}
-                    </option>
-                ))}
-            </select>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-2xl font-bold text-center mb-8">Fanlarni tanlang</h1>
+            <div className="mb-6 text-center">
+                <select
+                    className="p-2 border border-gray-300 rounded-md w-64"
+                    onChange={(e) => handleFanChange(e.target.value)}
+                >
+                    <option value="">Fan tanlang</option>
+                    {fanlar.map((fan) => (
+                        <option key={fan._id} value={fan._id}>
+                            {fan.fanNomi}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             {savollar.length > 0 && (
-    <div className="quiz-section">
-        <h2>Savollar</h2>
-        {savollar.map((savol) => (
-    <div key={savol._id}>
-        <h3>{savol.questionText}</h3>
-        {/* Options map */}
-        {savol.options && savol.options.map((option) => (
-            <div key={option._id}>
-                {/* Optionning ichidagi optionsni qayta map qilish */}
-                {option.options && option.options.map((subOption, index) => (
-                    <div key={subOption._id || index}>
-                        <input
-                            type="radio"
-                            name={`savol-${savol._id}`}
-                            value={subOption._id}
-                            onChange={() => handleAnswerChange(savol._id, subOption._id)}
-                        />
-                        {subOption.optionText} {/* Bu yerda optionText ko'rinadi */}
+                <div className="quiz-section">
+                    <h2 className="text-xl font-semibold mb-4">Savollar</h2>
+                    {savollar.map((savol) => (
+                        <div key={savol._id} className="mb-6">
+                            <h3 className="text-lg font-medium mb-2">{savol.questionText}</h3>
+                            {/* Options map */}
+                            {savol.options &&
+                                savol.options.map((option) => (
+                                    <div key={option._id} className="ml-4 mb-2">
+                                        {option.options &&
+                                            option.options.map((subOption, index) => (
+                                                <label
+                                                    key={subOption._id || index}
+                                                    className="flex items-center space-x-2"
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        name={`savol-${savol._id}`}
+                                                        value={subOption._id}
+                                                        onChange={() =>
+                                                            handleAnswerChange(savol._id, subOption._id)
+                                                        }
+                                                        className="form-radio"
+                                                    />
+                                                    <span>{subOption.optionText}</span>
+                                                </label>
+                                            ))}
+                                    </div>
+                                ))}
+                        </div>
+                    ))}
+                    <div className="text-center">
+                        <button
+                            onClick={handleSubmit}
+                            className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition"
+                        >
+                            Javoblarni yuborish
+                        </button>
                     </div>
-                ))}
-            </div>
-        ))}
-    </div>
-))}
-<button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
-    Javoblarni yuborish
-</button>
-
-        <button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
-            Javoblarni yuborish
-        </button>
-    </div>
-)}
-
+                </div>
+            )}
 
             {result && (
-                <div className="result-section">
-                    <h2>Natijalar</h2>
-                    <p>To'g'ri javoblar: {result.correctCount}/{result.totalQuestions}</p>
-                    <p>Umumiy ball: {result.score}%</p>
+                <div className="result-section mt-8 text-center">
+                    <h2 className="text-xl font-bold">Natijalar</h2>
+                    <p className="mt-4">
+                        To'g'ri javoblar: {result.correctCount}/{result.totalQuestions}
+                    </p>
+                    <p className="mt-2">Umumiy ball: {result.score}%</p>
                 </div>
             )}
         </div>
