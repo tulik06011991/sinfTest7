@@ -7,6 +7,7 @@ import Register from './components/Register'; // Register komponentini import qi
 import Navbar from './components/Navbar'; // Navbar komponentini import qilish
 import Main from './components/Main'
 import Test  from './components/Test'
+import Admin from './components/Admins/Admins'
 import './App.css';
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
             <Route path="/adminFan" element={<AdminFan />} /> {/* Admin fan sahifasi */}
             <Route path="/login" element={<Login />} /> {/* Login sahifasi */}
             <Route path="/register" element={<Register />} />
-            <Route path="/test" element={<Test/>} />  {/* Register sahifasi */}
+            <Route path="/test" element={<Test/>} />
+            <Route path="/admins" element={<Admin/>} />  {/* Register sahifasi */}
           </Routes>
         </div>
       </div>

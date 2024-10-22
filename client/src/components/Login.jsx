@@ -21,8 +21,8 @@ const Login = () => {
             const redirectUrl = response.data.redirectUrl;
             if (redirectUrl === '/savolJavoblar') {
                 window.location.href = '/test'; // Savol javoblar sahifasiga yo'naltirish
-            } else if (redirectUrl === '/admin/dashboard') {
-                window.location.href = '/admin/dashboard'; // Admin paneliga yo'naltirish
+            } else if (redirectUrl === '/superadmin/dashboard') {
+                window.location.href = '/admins'; // Admin paneliga yo'naltirish
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");

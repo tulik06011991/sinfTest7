@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../App.css'
+import { Link, useNavigate } from 'react-router-dom'; // useHistory o'rniga useNavigate ni import qildik
+import '../App.css';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate(); // useNavigate ni chaqiramiz
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Tokenni o'chirish
+        localStorage.removeItem('url'); // redirectUrl ni o'chirish
+        navigate('/login'); // Foydalanuvchini login sahifasiga yo'naltirish
+    };
+
+    const isLoggedIn = !!localStorage.getItem('token');
+    const redirectUrl = localStorage.getItem('url');
 
     return (
         <nav className="bg-blue-600 shadow-md">
@@ -16,12 +26,27 @@ const Navbar = () => {
                     <Link to="/">Quiz App</Link>
                 </div>
                 <div className="hidden md:flex space-x-4">
-                    <Link to="/login" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
-                        Tizimga kirish
-                    </Link>
-                    <Link to="/register" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
-                        Ro'yxatdan o'tish
-                    </Link>
+                    {isLoggedIn ? (
+                        <>
+                            {redirectUrl === '/admin/dashboard' && (
+                                <Link to="/fayl-yuklash" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                    Fayl yuklash
+                                </Link>
+                            )}
+                            <button onClick={handleLogout} className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Tizimga kirish
+                            </Link>
+                            <Link to="/register" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Ro'yxatdan o'tish
+                            </Link>
+                        </>
+                    )}
                 </div>
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="text-white focus:outline-none">
@@ -37,12 +62,27 @@ const Navbar = () => {
             </div>
             <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
                 <div className="flex flex-col space-y-2 px-4 pb-4">
-                    <Link to="/login" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
-                        Tizimga kirish
-                    </Link>
-                    <Link to="/register" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
-                        Ro'yxatdan o'tish
-                    </Link>
+                    {isLoggedIn ? (
+                        <>
+                            {redirectUrl === '/superadmin/dashboard' && (
+                                <Link to="/upload" className="text-white bg-gray-500 hover:bg-blue-700 px-3 py-2 rounded">
+                                    Fayl yuklash
+                                </Link>
+                            )}
+                            <button onClick={handleLogout} className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Tizimga kirish
+                            </Link>
+                            <Link to="/register" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
+                                Ro'yxatdan o'tish
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>
