@@ -10,10 +10,10 @@ exports.uploadQuiz = async (req, res) => {
         const { subjectId } = req.body; // Fan ID'ni body orqali qabul qilamiz
 
         // Fan mavjudligini tekshirish
-        const subject = await Subject.findById(subjectId);
-        if (!subject) {
-            return res.status(400).json({ error: 'Bunday fan mavjud emas' });
-        }
+        // const subject = await Subject.findById(subjectId);
+        // if (!subject) {
+        //     return res.status(400).json({ error: 'Bunday fan mavjud emas' });
+        // }
 
         // Word faylini o'qing
         const filePath = req.file.path;
