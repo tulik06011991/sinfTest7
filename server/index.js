@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const quizRoutes = require('./Routes/faylYuklash');
 const adminFan = require('./Routes/AdminFan')
+const auth = require('./Routes/Auth')
 
 // Konfiguratsiyani yuklash
 dotenv.config();
@@ -25,7 +26,8 @@ mongoose.connect(process.env.MONGO_URL,
 
 // Marshrutlar
 app.use('/api/quiz', quizRoutes);
-app.use('/api/fan', adminFan); // Quiz uchun marshrutlar
+app.use('/api/fan', adminFan);
+app.use('/auth', auth); // Quiz uchun marshrutlar
 
 // 404 sahifa topilmagan holat
 app.use((req, res, next) => {
