@@ -33,10 +33,10 @@ const QuizComponent = () => {
     };
 
     // Javoblarni belgilash
-    const handleAnswerChange = (savolId, variant) => {
+    const handleAnswerChange = (questionId, optionId) => {
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
-            [savolId]: variant,
+            [questionId]: optionId,
         }));
     };
 
@@ -44,8 +44,10 @@ const QuizComponent = () => {
     const handleSubmit = async () => {
         try {
             const response = await axios.post("/api/tekshirJavoblar", {
-                fanId: selectedFan,
-                answers,
+                answers: Object.keys(answers).map(questionId => ({
+                    questionId,
+                    selectedOption: answers[questionId]
+                }))
             });
             setResult(response.data);
         } catch (error) {
@@ -59,7 +61,7 @@ const QuizComponent = () => {
             <select onChange={(e) => handleFanChange(e.target.value)}>
                 <option value="">Fan tanlang</option>
                 {fanlar.map((fan) => (
-                    <option key={fan._id} value={fan.fanId}>
+                    <option key={fan._id} value={fan._id}>
                         {fan.fanNomi}
                     </option>
                 ))}
@@ -69,17 +71,17 @@ const QuizComponent = () => {
                 <div className="quiz-section">
                     <h2>Savollar</h2>
                     {savollar.map((savol) => (
-                        <div key={savol._id}>
-                            <h3>{savol.savol}</h3>
-                            {savol.variants.map((variant, index) => (
-                                <div key={index}>
+                        <div key={savol.questionText}>
+                            <h3>{savol.questionText}</h3>
+                            {savol.options.map((option) => (
+                                <div key={option._id}>
                                     <input
                                         type="radio"
                                         name={`savol-${savol._id}`}
-                                        value={variant}
-                                        onChange={() => handleAnswerChange(savol._id, variant)}
+                                        value={option._id}
+                                        onChange={() => handleAnswerChange(savol._id, option._id)}
                                     />
-                                    {variant}
+                                    {option.optionText}
                                 </div>
                             ))}
                         </div>

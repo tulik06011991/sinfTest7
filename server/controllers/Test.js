@@ -34,3 +34,37 @@ exports.getSavollarByFan = async (req, res) => {
         res.status(500).json({ message: "Savollarni olishda xatolik yuz berdi!" });
     }
 };
+
+
+exports.checkAnswers = async (req, res) => {
+    const { answers } = req.body;
+
+    try {
+        let correctCount = 0;
+        const totalQuestions = answers.length;
+
+        // Har bir savolga nisbatan foydalanuvchi javoblarini tekshirish
+        for (const answer of answers) {
+            const { questionId, selectedOption } = answer;
+
+            // Savolga oid to'g'ri variantni topish
+            const correctOption = await Option.findOne({ question: questionId, 'options.isCorrect': true });
+
+            // Foydalanuvchi to'g'ri variantni tanlaganligini tekshirish
+            if (correctOption && correctOption.options.some(option => option._id.toString() === selectedOption)) {
+                correctCount++;
+            }
+        }
+
+        const score = (correctCount / totalQuestions) * 100;
+
+        res.status(200).json({
+            message: "Natijalar hisoblandi",
+            correctCount,
+            totalQuestions,
+            score
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Javoblarni tekshirishda xatolik yuz berdi!" });
+    }
+};
