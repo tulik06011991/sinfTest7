@@ -5,7 +5,7 @@ import AdminFan from './components/AdminFan'; // AdminFan komponentini import qi
 import Login from './components/Login'; // Login komponentini import qilish
 import Register from './components/Register'; // Register komponentini import qilish
 import Navbar from './components/Navbar'; // Navbar komponentini import qilish
-import './App.css';
+import './index.css';
 
 function App() {
   return (
