@@ -14,13 +14,13 @@ const AdminCRUD = () => {
   const [currentAdminId, setCurrentAdminId] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null) ;
 
   // Adminlar ro'yxatini olish
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get("/api/admins");
+        const response = await axios.get("http://localhost:5000/admin/admins");
         setAdmins(response.data);
         setLoading(false);
       } catch (error) {
@@ -47,7 +47,7 @@ const AdminCRUD = () => {
     if (editing) {
       // Adminni yangilash
       try {
-        await axios.put(`/api/admin/${currentAdminId}`, formData);
+        await axios.put(`http://localhost:5000/admin/admin/${currentAdminId}`, formData);
         setMessage("Admin muvaffaqiyatli yangilandi!");
         setAdmins(
           admins.map((admin) =>
@@ -68,7 +68,7 @@ const AdminCRUD = () => {
     } else {
       // Yangi admin yaratish
       try {
-        const response = await axios.post("/api/admin", formData);
+        const response = await axios.post("http://localhost:5000/admin/admin", formData);
         setAdmins([...admins, response.data]);
         setMessage("Admin muvaffaqiyatli yaratildi!");
         setFormData({
@@ -87,7 +87,7 @@ const AdminCRUD = () => {
   // Adminni o'chirish
   const deleteAdmin = async (id) => {
     try {
-      await axios.delete(`/api/admin/${id}`);
+      await axios.delete(`http://localhost:5000/admin/admin/${id}`);
       setAdmins(admins.filter((admin) => admin._id !== id));
       setMessage("Admin muvaffaqiyatli o'chirildi!");
     } catch (error) {
