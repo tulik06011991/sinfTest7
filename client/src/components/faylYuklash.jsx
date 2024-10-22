@@ -1,119 +1,80 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import "../App.css"
 
 const UploadQuiz = () => {
-    const [file, setFile] = useState(null);
-    const [subjectId, setSubjectId] = useState('');
-    const [subjects, setSubjects] = useState([]);
-    const [uploading, setUploading] = useState(false);
-    const [message, setMessage] = useState('');
+  const [file, setFile] = useState(null);
+  const [fanId, setFanId] = useState('');
 
-    useEffect(() => {
-        // Backenddan fanlarni olish
-        const fetchSubjects = async () => {
-            try {
-                const response = await axios.get('/api/subjects'); // Backend API orqali fanlarni olish
-                setSubjects(response.data);
-            } catch (error) {
-                console.error('Fanlarni olishda xatolik:', error);
-            }
-        };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-        fetchSubjects();
-    }, []);
+  const handleFanIdChange = (e) => {
+    setFanId(e.target.value);
+  };
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubjectChange = (e) => {
-        setSubjectId(e.target.value);
-    };
+    if (!file || !fanId) {
+      alert("Iltimos, fayl va fan ID ni tanlang.");
+      return;
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!file || !subjectId) {
-            setMessage('Iltimos, fan va Word faylini tanlang.');
-            return;
-        }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('fanId', fanId);
 
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('subjectId', subjectId);
+    try {
+      const response = await axios.post('http://localhost:5000/api/quiz/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-        try {
-            setUploading(true);
-            setMessage('');
+      console.log('Fayl muvaffaqiyatli yuklandi', response.data);
+      alert('Fayl muvaffaqiyatli yuklandi!');
+    } catch (error) {
+      console.error('Fayl yuklashda xatolik:', error);
+      alert('Fayl yuklashda xatolik yuz berdi.');
+    }
+  };
 
-            const response = await axios.post('http://localhost:5000/api/quiz/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            setMessage('Fayl muvaffaqiyatli yuklandi!');
-        } catch (error) {
-            console.error('Fayl yuklashda xatolik:', error);
-            setMessage('Fayl yuklashda xatolik yuz berdi.');
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Quiz Fayl Yuklash</h2>
-
-                {message && (
-                    <div className="mb-4 text-center text-white bg-green-500 p-2 rounded-lg">
-                        {message}
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="subject" className="block text-gray-700 font-medium mb-2">
-                            Fan tanlang
-                        </label>
-                        <select
-                            id="subject"
-                            className="block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 focus:outline-none focus:border-indigo-500"
-                            value={subjectId}
-                            onChange={handleSubjectChange}
-                        >
-                            <option value="">Fan tanlang</option>
-                            {subjects.map((subject) => (
-                                <option key={subject._id} value={subject._id}>
-                                    {subject.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="file" className="block text-gray-700 font-medium mb-2">
-                            Word fayl yuklang
-                        </label>
-                        <input
-                            type="file"
-                            id="file"
-                            className="block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 focus:outline-none focus:border-indigo-500"
-                            onChange={handleFileChange}
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className={`w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={uploading}
-                    >
-                        {uploading ? 'Yuklanmoqda...' : 'Yuklash'}
-                    </button>
-                </form>
-            </div>
+  return (
+    <div className="container mx-auto my-10">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Fan ID:</label>
+          <input 
+            type="text" 
+            value={fanId} 
+            onChange={handleFanIdChange} 
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+          />
         </div>
-    );
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Word fayl yuklash:</label>
+          <input 
+            type="file" 
+            onChange={handleFileChange} 
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            accept=".doc,.docx"
+            required
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          Yuklash
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default UploadQuiz;
