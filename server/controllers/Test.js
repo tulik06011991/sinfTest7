@@ -25,7 +25,11 @@ exports.getSavollarByFan = async (req, res) => {
             const options = await Option.find({ question: savol._id });
             return {
                 questionText: savol.questionText,
-                options
+                options: options.map(option => ({
+                    _id: option._id,
+                    optionText: option.optionText,
+                    isCorrect: option.isCorrect
+                }))
             };
         }));
 
@@ -35,10 +39,9 @@ exports.getSavollarByFan = async (req, res) => {
     }
 };
 
-
+// Javoblarni tekshirish
 exports.checkAnswers = async (req, res) => {
     const { answers } = req.body;
-console.log(answers)
 
     try {
         let correctCount = 0;
@@ -49,10 +52,10 @@ console.log(answers)
             const { questionId, selectedOption } = answer;
 
             // Savolga oid to'g'ri variantni topish
-            const correctOption = await Option.findOne({ question: questionId, 'options.isCorrect': true });
+            const correctOption = await Option.findOne({ question: questionId, isCorrect: true });
 
             // Foydalanuvchi to'g'ri variantni tanlaganligini tekshirish
-            if (correctOption && correctOption.options.some(option => option._id.toString() === selectedOption)) {
+            if (correctOption && correctOption._id.toString() === selectedOption) {
                 correctCount++;
             }
         }

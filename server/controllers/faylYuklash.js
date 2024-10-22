@@ -24,15 +24,12 @@ exports.extractAndSave = async (req, res) => {
         // Fayl mazmunini ajratish
         const lines = text.split('\n'); // Har bir qatorni ajratib olamiz
         let currentQuestion = null;
-        let isValid = false; // Savol yoki variant borligini tekshirish uchun flag
 
         for (let line of lines) {
             line = line.trim();
 
             // Agar raqam va . bilan boshlanib, oxirida . yoki ? bilan tugasa, bu savol hisoblanadi
             if (/^\d+\./.test(line) && /[.?]$/.test(line)) {
-                isValid = true; // Savol borligi aniqlandi
-
                 // Savolni yarating va saqlang
                 currentQuestion = new Question({
                     questionText: line,
@@ -54,10 +51,8 @@ exports.extractAndSave = async (req, res) => {
 
                 // Variantni saqlash
                 const newOption = new Option({
-                    options: [{
-                        optionText: optionText,
-                        isCorrect: isCorrect
-                    }],
+                    optionText: optionText,
+                    isCorrect: isCorrect,
                     question: currentQuestion._id // Savol bilan bog'lash
                 });
                 await newOption.save(); // Variantni saqlash
@@ -65,7 +60,7 @@ exports.extractAndSave = async (req, res) => {
         }
 
         // Agar hech qanday savol yoki variant topilmasa, foydalanuvchiga xabar bering
-        if (!isValid) {
+        if (!currentQuestion) {
             return res.status(400).json({
                 message: "Yuklangan faylda hech qanday savol yoki variant topilmadi. Iltimos, faylni tekshiring!"
             });
