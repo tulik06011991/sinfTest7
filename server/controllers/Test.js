@@ -1,6 +1,6 @@
-const Fan = require('../models/Fan');
-const Question = require('../models/Question');
-const Option = require('../models/Option');
+const Fan = require('../models/Subject');
+const Question = require('../models/Questions');
+const Option = require('../models/Options');
 
 // Fanlar ro'yxatini olish
 exports.getFanlar = async (req, res) => {
