@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login } from '../api/auth'; // Import API xizmatlari
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,11 +12,11 @@ const Login = () => {
 
         try {
             const userData = { email, password };
-            const response = await login(userData);
-            console.log(response); // Kirgan foydalanuvchi ma'lumotlarini ko'rish
+            const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+            console.log(response.data); // Kirgan foydalanuvchi ma'lumotlarini ko'rish
             // Kirganidan keyin foydalanuvchini yo'naltirish mumkin
         } catch (error) {
-            setError(error.message); // Xatolik bo'lsa, foydalanuvchiga ko'rsatish
+            setError(error.response ? error.response.data.message : "Server xatosi!");
         }
     };
 
