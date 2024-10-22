@@ -24,6 +24,7 @@ exports.getSavollarByFan = async (req, res) => {
         const questionsWithOptions = await Promise.all(savollar.map(async (savol) => {
             const options = await Option.find({ question: savol._id });
             return {
+                questionId: savol._id,
                 questionText: savol.questionText,
                 options: options.map(option => ({
                     _id: option._id,
