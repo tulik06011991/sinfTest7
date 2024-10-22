@@ -5,6 +5,7 @@ import AdminFan from './components/AdminFan'; // AdminFan komponentini import qi
 import Login from './components/Login'; // Login komponentini import qilish
 import Register from './components/Register'; // Register komponentini import qilish
 import Navbar from './components/Navbar'; // Navbar komponentini import qilish
+import Main from './components/Main'
 import './App.css';
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
 
         <div className="content">
           <Routes>
-            <Route path="/" element={<h1 className="text-center text-3xl mt-10">Bosh sahifa</h1>} />
+            <Route path="/" element={<Main/>} />
             <Route path="/upload" element={<UploadQuiz />} /> {/* Fayl yuklash sahifasi */}
             <Route path="/adminFan" element={<AdminFan />} /> {/* Admin fan sahifasi */}
             <Route path="/login" element={<Login />} /> {/* Login sahifasi */}
