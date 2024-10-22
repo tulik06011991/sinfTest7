@@ -13,7 +13,9 @@ const QuizComponent = () => {
         const getFanlar = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/test/fanlar");
+                console.log(response)
                 setFanlar(response.data);
+                
             } catch (error) {
                 console.error("Fanlarni olishda xatolik yuz berdi.");
             }
@@ -27,6 +29,8 @@ const QuizComponent = () => {
         try {
             const response = await axios.get(`http://localhost:5000/test/savollar/${fanId}`);
             setSavollar(response.data);
+            console.log(response.data)
+            
         } catch (error) {
             console.error("Savollarni olishda xatolik yuz berdi.");
         }
