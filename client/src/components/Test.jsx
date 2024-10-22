@@ -74,22 +74,31 @@ const QuizComponent = () => {
     <div className="quiz-section">
         <h2>Savollar</h2>
         {savollar.map((savol) => (
-            <div key={savol.questionText}>
-                <h3>{savol.questionText}</h3>
-                {savol.options.map((option) => (
-                    <div key={option._id}>
+    <div key={savol._id}>
+        <h3>{savol.questionText}</h3>
+        {/* Options map */}
+        {savol.options && savol.options.map((option) => (
+            <div key={option._id}>
+                {/* Optionning ichidagi optionsni qayta map qilish */}
+                {option.options && option.options.map((subOption, index) => (
+                    <div key={subOption._id || index}>
                         <input
                             type="radio"
                             name={`savol-${savol._id}`}
-                            value={option._id}
-                            onChange={() => handleAnswerChange(savol._id, option._id)}
+                            value={subOption._id}
+                            onChange={() => handleAnswerChange(savol._id, subOption._id)}
                         />
-                        {/* Ichki obyekt bor-yo'qligini tekshirish */}
-                        {option.options.optionText }
+                        {subOption.optionText} {/* Bu yerda optionText ko'rinadi */}
                     </div>
                 ))}
             </div>
         ))}
+    </div>
+))}
+<button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
+    Javoblarni yuborish
+</button>
+
         <button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
             Javoblarni yuborish
         </button>
