@@ -2,19 +2,10 @@ const fs = require('fs');
 const mammoth = require('mammoth');
 const Question = require('../models/Questions');
 const Option = require('../models/Options');
-const Subject = require('../models/Subject');
 
 // Word faylini yuklab, JSON formatga o'tkazish va savollarni va variantlarni ajratish
 exports.uploadQuiz = async (req, res) => {
     try {
-        const { subjectId } = req.body; // Fan ID'ni body orqali qabul qilamiz
-
-        // Fan mavjudligini tekshirish
-        const subject = await Subject.findById(subjectId);
-        if (!subject) {
-            return res.status(400).json({ error: 'Bunday fan mavjud emas' });
-        }
-
         // Word faylini o'qing
         const filePath = req.file.path;
         const result = await mammoth.extractRawText({ path: filePath });
@@ -60,8 +51,7 @@ exports.uploadQuiz = async (req, res) => {
         // Saqlash
         for (let questionData of questions) {
             const newQuestion = new Question({
-                text: questionData.text,
-                subject: subjectId // Fan ID'ni savolga bog'laymiz
+                text: questionData.text
             });
             await newQuestion.save();
 
