@@ -29,7 +29,7 @@ const Home = () => {
           {/* Right Content (Image) */}
           <div>
             <img
-              src="https://via.placeholder.com/500"
+              src="https://images.pexels.com/photos/1462630/pexels-photo-1462630.jpeg?auto=compress&cs=tinysrgb&w=600"
               alt="Main"
               className="rounded-lg shadow-lg"
             />
@@ -47,7 +47,7 @@ const Home = () => {
             {/* Feature 1 */}
             <div className="bg-gray-200 p-6 rounded-lg shadow-md hover:bg-gray-300 transition">
               <img
-                src="https://via.placeholder.com/300"
+                src="https://images.pexels.com/photos/5427819/pexels-photo-5427819.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Feature 1"
                 className="rounded-md mb-4"
               />
@@ -59,7 +59,7 @@ const Home = () => {
             {/* Feature 2 */}
             <div className="bg-gray-200 p-6 rounded-lg shadow-md hover:bg-gray-300 transition">
               <img
-                src="https://via.placeholder.com/300"
+                src="https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Feature 2"
                 className="rounded-md mb-4"
               />
@@ -71,7 +71,7 @@ const Home = () => {
             {/* Feature 3 */}
             <div className="bg-gray-200 p-6 rounded-lg shadow-md hover:bg-gray-300 transition">
               <img
-                src="https://via.placeholder.com/300"
+                src="https://media.istockphoto.com/id/1500285927/photo/young-woman-a-university-student-studying-online.jpg?b=1&s=612x612&w=0&k=20&c=OCsNrSiSH8OEwJxJSuRawHnGd72TlWIWiRicFUihKEY="
                 alt="Feature 3"
                 className="rounded-md mb-4"
               />
