@@ -13,7 +13,7 @@ const Register = () => {
 
         try {
             const userData = { username, email, password };
-            const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+            const response = await axios.post('http://localhost:5000/auth/register', userData);
             console.log(response.data); // Ro'yxatdan o'tgan foydalanuvchi ma'lumotlarini ko'rish
             // Ro'yxatdan o'tgandan keyin foydalanuvchini yo'naltirish mumkin
         } catch (error) {
