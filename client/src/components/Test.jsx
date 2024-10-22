@@ -80,26 +80,18 @@ const QuizComponent = () => {
                             <h3 className="text-lg font-medium mb-2">{savol.questionText}</h3>
                             {/* Options map */}
                             {savol.options &&
-                                savol.options.map((option) => (
-                                    <div key={option._id} className="ml-4 mb-2">
-                                        {option.options &&
-                                            option.options.map((subOption, index) => (
-                                                <label
-                                                    key={subOption._id || index}
-                                                    className="flex items-center space-x-2"
-                                                >
-                                                    <input
-                                                        type="radio"
-                                                        name={`savol-${savol._id}`}
-                                                        value={subOption._id}
-                                                        onChange={() =>
-                                                            handleAnswerChange(savol._id, subOption._id)
-                                                        }
-                                                        className="form-radio"
-                                                    />
-                                                    <span>{subOption.optionText}</span>
-                                                </label>
-                                            ))}
+                                savol.options.map((subOption) => (
+                                    <div key={subOption._id} className="ml-4 mb-2">
+                                        <label className="flex items-center space-x-2">
+                                            <input
+                                                type="radio"
+                                                name={`savol-${savol._id}`}
+                                                value={subOption._id}
+                                                onChange={() => handleAnswerChange(savol._id, subOption._id)}
+                                                className="form-radio"
+                                            />
+                                            <span>{subOption.optionText}</span>
+                                        </label>
                                     </div>
                                 ))}
                         </div>
