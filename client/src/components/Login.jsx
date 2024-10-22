@@ -12,7 +12,7 @@ const Login = () => {
 
         try {
             const userData = { email, password };
-            const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+            const response = await axios.post('http://localhost:5000/auth/login', userData);
             console.log(response.data); // Kirgan foydalanuvchi ma'lumotlarini ko'rish
             // Kirganidan keyin foydalanuvchini yo'naltirish mumkin
         } catch (error) {
