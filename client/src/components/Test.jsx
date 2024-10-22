@@ -13,9 +13,7 @@ const QuizComponent = () => {
         const getFanlar = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/test/fanlar");
-                console.log(response)
                 setFanlar(response.data);
-                
             } catch (error) {
                 console.error("Fanlarni olishda xatolik yuz berdi.");
             }
@@ -29,8 +27,7 @@ const QuizComponent = () => {
         try {
             const response = await axios.get(`http://localhost:5000/test/savollar/${fanId}`);
             setSavollar(response.data);
-            console.log(response.data)
-            
+            setAnswers({}); // Yangi fan tanlanganda javoblarni tozalash
         } catch (error) {
             console.error("Savollarni olishda xatolik yuz berdi.");
         }
@@ -80,21 +77,21 @@ const QuizComponent = () => {
                 <div className="quiz-section">
                     <h2 className="text-xl font-semibold mb-4">Savollar</h2>
                     {savollar.map((savol) => (
-                        <div key={savol._id} className="mb-6">
+                        <div key={savol.questionId} className="mb-6">
                             <h3 className="text-lg font-medium mb-2">{savol.questionText}</h3>
-                            {/* Options map */}
-                            {savol.options.map((subOption) => (
-                                <div key={subOption._id} className="ml-4 mb-2">
+                            {/* Har bir savol uchun variantlarni ko'rsatamiz */}
+                            {savol.options.map((option) => (
+                                <div key={option._id} className="ml-4 mb-2">
                                     <label className="flex items-center space-x-2">
                                         <input
                                             type="radio"
-                                            name={`savol-${savol._id}`} // Har bir savol uchun alohida nom
-                                            value={subOption._id}
-                                            checked={answers[savol._id] === subOption._id} // To'g'ri variantni belgilash
-                                            onChange={() => handleAnswerChange(savol._id, subOption._id)}
+                                            name={`savol-${savol.questionId}`} // Har bir savol uchun alohida nom
+                                            value={option._id}
+                                            checked={answers[savol.questionId] === option._id} // Tanlangan variantni belgilash
+                                            onChange={() => handleAnswerChange(savol.questionId, option._id)}
                                             className="form-radio"
                                         />
-                                        <span>{subOption.optionText}</span>
+                                        <span>{option.optionText}</span>
                                     </label>
                                 </div>
                             ))}
