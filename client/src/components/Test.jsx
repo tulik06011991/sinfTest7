@@ -79,21 +79,21 @@ const QuizComponent = () => {
                         <div key={savol._id} className="mb-6">
                             <h3 className="text-lg font-medium mb-2">{savol.questionText}</h3>
                             {/* Options map */}
-                            {savol.options &&
-                                savol.options.map((subOption) => (
-                                    <div key={subOption._id} className="ml-4 mb-2">
-                                        <label className="flex items-center space-x-2">
-                                            <input
-                                                type="radio"
-                                                name={`savol-${savol._id}`}
-                                                value={subOption._id}
-                                                onChange={() => handleAnswerChange(savol._id, subOption._id)}
-                                                className="form-radio"
-                                            />
-                                            <span>{subOption.optionText}</span>
-                                        </label>
-                                    </div>
-                                ))}
+                            {savol.options.map((subOption) => (
+                                <div key={subOption._id} className="ml-4 mb-2">
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            name={`savol-${savol._id}`} // Har bir savol uchun alohida nom
+                                            value={subOption._id}
+                                            checked={answers[savol._id] === subOption._id} // To'g'ri variantni belgilash
+                                            onChange={() => handleAnswerChange(savol._id, subOption._id)}
+                                            className="form-radio"
+                                        />
+                                        <span>{subOption.optionText}</span>
+                                    </label>
+                                </div>
+                            ))}
                         </div>
                     ))}
                     <div className="text-center">
