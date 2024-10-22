@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -22,9 +23,11 @@ const Home = () => {
               Bizning veb-saytimiz orqali turli fanlardan testlar yechib, bilim darajangizni oshiring.
               Birgalikda o'rganing va bilimlaringizni sinovdan o'tkazing!
             </p>
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
-              Boshlash
-            </button>
+            <Link to="/login">
+  <button className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
+    Boshlash
+  </button>
+</Link>
           </div>
           {/* Right Content (Image) */}
           <div>
