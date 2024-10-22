@@ -14,6 +14,8 @@ const QuizComponent = () => {
             try {
                 const response = await axios.get("http://localhost:5000/test/fanlar");
                 setFanlar(response.data);
+                console.log(response.data)
+                
             } catch (error) {
                 console.error("Fanlarni olishda xatolik yuz berdi.");
             }
@@ -26,12 +28,13 @@ const QuizComponent = () => {
         setSelectedFan(fanId);
         try {
             const response = await axios.get(`http://localhost:5000/test/savollar/${fanId}`);
+           
             setSavollar(response.data);
         } catch (error) {
             console.error("Savollarni olishda xatolik yuz berdi.");
         }
     };
-
+    console.log(savollar)
     // Javoblarni belgilash
     const handleAnswerChange = (questionId, optionId) => {
         setAnswers((prevAnswers) => ({
@@ -68,29 +71,31 @@ const QuizComponent = () => {
             </select>
 
             {savollar.length > 0 && (
-                <div className="quiz-section">
-                    <h2>Savollar</h2>
-                    {savollar.map((savol) => (
-                        <div key={savol.questionText}>
-                            <h3>{savol.questionText}</h3>
-                            {savol.options.map((option) => (
-                                <div key={option._id}>
-                                    <input
-                                        type="radio"
-                                        name={`savol-${savol._id}`}
-                                        value={option._id}
-                                        onChange={() => handleAnswerChange(savol._id, option._id)}
-                                    />
-                                    {option.optionText}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                    <button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
-                        Javoblarni yuborish
-                    </button>
-                </div>
-            )}
+    <div className="quiz-section">
+        <h2>Savollar</h2>
+        {savollar.map((savol) => (
+            <div key={savol.questionText}>
+                <h3>{savol.questionText}</h3>
+                {savol.options.map((option) => (
+                    <div key={option._id}>
+                        <input
+                            type="radio"
+                            name={`savol-${savol._id}`}
+                            value={option._id}
+                            onChange={() => handleAnswerChange(savol._id, option._id)}
+                        />
+                        {/* Ichki obyekt bor-yo'qligini tekshirish */}
+                        {option.options.optionText }
+                    </div>
+                ))}
+            </div>
+        ))}
+        <button onClick={handleSubmit} className="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
+            Javoblarni yuborish
+        </button>
+    </div>
+)}
+
 
             {result && (
                 <div className="result-section">
