@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const QuizComponent = () => {
     const [fanlar, setFanlar] = useState([]);
@@ -7,6 +8,7 @@ const QuizComponent = () => {
     const [savollar, setSavollar] = useState([]);
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);
+    const navigate= useNavigate()
 
     // Fanlar ro'yxatini olish
     useEffect(() => {
@@ -20,6 +22,15 @@ const QuizComponent = () => {
         };
         getFanlar();
     }, []);
+    useEffect(() => {
+        // Local storage'da tokenni tekshirish
+        const token = localStorage.getItem('token');
+
+        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
+        if (!token) {
+            navigate('/login'); // Login sahifasining yo'li
+        }
+    }, [navigate]);
 
     // Tanlangan fan bo'yicha savollarni olish
     const handleFanChange = async (fanId) => {

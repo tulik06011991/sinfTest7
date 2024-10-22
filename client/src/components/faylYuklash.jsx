@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FileUpload = () => {
     // Fan ID va faylni state orqali boshqarish
     const [fanId, setFanId] = useState('');
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
+
+    const navigate= useNavigate()
+    useEffect(() => {
+        // Local storage'da tokenni tekshirish
+        const token = localStorage.getItem('token');
+
+        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
+        if (!token) {
+            navigate('/login'); // Login sahifasining yo'li
+        }
+    }, [navigate]);
 
     // Fan ID o'zgarishi
     const handleFanIdChange = (e) => {

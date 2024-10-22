@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminCRUD = () => {
   const [admins, setAdmins] = useState([]);
@@ -15,6 +16,17 @@ const AdminCRUD = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate= useNavigate()
+
+    useEffect(() => {
+        // Local storage'da tokenni tekshirish
+        const token = localStorage.getItem('token');
+
+        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
+        if (!token) {
+            navigate('/login'); // Login sahifasining yo'li
+        }
+    }, [navigate]);
 
   // Adminlar ro'yxatini olish
   useEffect(() => {

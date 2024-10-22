@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateFan = () => {
   const [fanNomi, setFanNomi] = useState('');
   const [adminNomi, setAdminNomi] = useState('');
   const [adminParoli, setAdminParoli] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
+
+
+  const navigate= useNavigate()
+    useEffect(() => {
+        // Local storage'da tokenni tekshirish
+        const token = localStorage.getItem('token');
+
+        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
+        if (!token) {
+            navigate('/login'); // Login sahifasining yo'li
+        }
+    }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
