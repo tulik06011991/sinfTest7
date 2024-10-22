@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid'); // uuid kutubxonasini import qilish
-const Fan = require('../models/fanModel');
+const Fan = require('../models/Subject');
 const bcrypt = require('bcrypt');
 
 // Fan yaratish controller
