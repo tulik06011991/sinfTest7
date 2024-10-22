@@ -8,7 +8,12 @@ const QuestionSchema = new mongoose.Schema({
     options: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Option'
-    }]
+    }],
+    subject: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subject',
+        required: true
+    }
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);
