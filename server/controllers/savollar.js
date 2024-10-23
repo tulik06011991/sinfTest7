@@ -7,10 +7,7 @@ exports.getQuestionsWithOptionsByFanId = async (req, res) => {
     try {
         // Foydalanuvchidan fan ID ga muvofiq savollarni olish
         const questions = await Question.find({ fanId }) // Fan ID ga muvofiq savollarni qidiring
-            .populate({
-                path: 'options', // Variantlarni populate qilish
-                match: { fanId } // Faqat fanId ga muvofiq variantlarni olish
-            });
+            .populate('options'); // Variantlarni populate qilish
 
         if (!questions.length) {
             return res.status(404).json({ message: "Savollar topilmadi!" });
