@@ -35,7 +35,7 @@ const QuizComponent = () => {
         } else {
             // Tokenni decode qilib, undagi userId ni olish
             const decoded = jwtDecode(token);
-            setUserId(decoded.userId); // userId ni saqlash
+            setUserId(decoded.id); // userId ni saqlash
         }
     }, [navigate]);
 
