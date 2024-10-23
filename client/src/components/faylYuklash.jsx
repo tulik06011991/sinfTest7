@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const FileUpload = () => {
-    // Fan ID va faylni state orqali boshqarish
     const [fanId, setFanId] = useState('');
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [fans, setFans] = useState([]); // Fanlar ro'yxati
+    const navigate = useNavigate();
 
-    const navigate= useNavigate()
     useEffect(() => {
         // Local storage'da tokenni tekshirish
         const token = localStorage.getItem('token');
@@ -16,13 +16,20 @@ const FileUpload = () => {
         // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
         if (!token) {
             navigate('/login'); // Login sahifasining yo'li
+        } else {
+            // Fanlar ro'yxatini olish
+            const fetchFans = async () => {
+                try {
+                    const response = await axios.get('http://localhost:5000/test/fanlar'); // Fanlar olish uchun endpoint
+                    setFans(response.data);
+                } catch (error) {
+                    console.error('Fanlarni olishda xato:', error);
+                }
+            };
+
+            fetchFans(); // Fanlarni yuklash
         }
     }, [navigate]);
-
-    // Fan ID o'zgarishi
-    const handleFanIdChange = (e) => {
-        setFanId(e.target.value);
-    };
 
     // Fayl tanlanishi
     const handleFileChange = (e) => {
@@ -63,15 +70,19 @@ const FileUpload = () => {
             <h2 className="text-2xl font-bold text-center mb-6">Fan ID va Fayl Yuklash</h2>
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
                 <div className="mb-4">
-                    <label htmlFor="fanId" className="block text-sm font-medium text-gray-700">Fan ID:</label>
-                    <input
-                        type="text"
+                    <label htmlFor="fanId" className="block text-sm font-medium text-gray-700">Fan:</label>
+                    <select
                         id="fanId"
                         value={fanId}
-                        onChange={handleFanIdChange}
+                        onChange={(e) => setFanId(e.target.value)}
                         required
                         className="border border-gray-300 p-2 rounded w-full mt-1"
-                    />
+                    >
+                        <option value="" disabled>Select a fan</option>
+                        {fans.map((fan) => (
+                            <option key={fan.id} value={fan.id}> {fan.fanNomi}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="mb-4">
