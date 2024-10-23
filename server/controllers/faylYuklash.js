@@ -7,7 +7,6 @@ const mammoth = require('mammoth');
 // Fayldan matn olish va tahlil qilish funksiyasi
 exports.extractAndSave = async (req, res) => {
     try {
-        // URL orqali kelayotgan fanId ni olish
         const { fanId } = req.body;
 
         if (!fanId) {
@@ -16,28 +15,23 @@ exports.extractAndSave = async (req, res) => {
             });
         }
 
-        // Yuklangan Word faylidan matn oling
         const filePath = path.join(__dirname, '../', req.file.path);
         const result = await mammoth.extractRawText({ path: filePath });
-        const text = result.value; // Word faylidagi matn
+        const text = result.value;
 
-        // Fayl mazmunini ajratish
-        const lines = text.split('\n'); // Har bir qatorni ajratib olamiz
+        const lines = text.split('\n');
         let currentQuestion = null;
 
         for (let line of lines) {
             line = line.trim();
 
-            // Agar raqam va . bilan boshlanib, oxirida . yoki ? bilan tugasa, bu savol hisoblanadi
             if (/^\d+\./.test(line) && /[.?]$/.test(line)) {
-                // Savolni yarating va saqlang
                 currentQuestion = new Question({
                     questionText: line,
-                    fanId: fanId // Savolni fanga bog'lash
+                    fanId: fanId
                 });
-                await currentQuestion.save(); // Yangi savol saqlanadi
+                await currentQuestion.save();
             } 
-            // Agar A) yoki B) bilan boshlansa, bu variant hisoblanadi
             else if (/^[A-D]\)/.test(line) || /^\.[A-D]\)/.test(line)) {
                 if (!currentQuestion) {
                     return res.status(400).json({
@@ -45,27 +39,29 @@ exports.extractAndSave = async (req, res) => {
                     });
                 }
 
-                // Oldida . bo'lsa, to'g'ri variant
                 const isCorrect = /^\.[A-D]\)/.test(line);
                 const optionText = line.replace(/^\.[A-D]\)/, '').replace(/^[A-D]\)/, '').trim();
 
-                // Variantni saqlash
                 const newOption = new Option({
                     optionText: optionText,
                     isCorrect: isCorrect,
-                    question: currentQuestion._id, // Savol bilan bog'lash
-                    fanId: fanId // Variantni fanga bog'lash
+                    question: currentQuestion._id,
+                    fanId: fanId // Fan ID ni variantga qo'shamiz
                 });
-                await newOption.save(); // Variantni saqlash
+                await newOption.save();
+
+                // Savolga variantni qo'shish
+                currentQuestion.options.push(newOption._id); // Variantni savolga qo'shish
             }
         }
 
-        // Agar hech qanday savol yoki variant topilmasa, foydalanuvchiga xabar bering
         if (!currentQuestion) {
             return res.status(400).json({
-                message: "Yuklangan faylda hech qanday savol yoki variant topilmadi. Iltimos, faylni tekshiring!"
+                message: "Yuklangan faylda hech qanday savol yoki variant topilmadi."
             });
         }
+
+        await currentQuestion.save(); // Savolni yangilab saqlash
 
         res.status(200).json({ message: "Savollar va variantlar muvaffaqiyatli saqlandi!" });
         

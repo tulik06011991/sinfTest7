@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const AdminDashboard = () => {
     const [questions, setQuestions] = useState([]);
@@ -7,7 +9,16 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const fanId = localStorage.getItem('fanId')
+    const navigate = useNavigate()
     console.log(fanId);
+
+    
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
     
 
     const fetchQuestions = async () => {
@@ -15,6 +26,8 @@ const AdminDashboard = () => {
         setError('');
         try {
             const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`); // Savollarni olish uchun endpoint
+            console.log(response.data);
+            
             setQuestions(response.data);
         } catch (err) {
             setError('Savollarni yuklashda xato.');
