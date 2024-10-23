@@ -13,6 +13,11 @@ const optionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
         required: true
+    },
+    fanId: {  // fanId maydoni qo'shildi
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Fan',
+        required: true
     }
 }, { timestamps: true });
 

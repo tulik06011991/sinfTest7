@@ -53,7 +53,8 @@ exports.extractAndSave = async (req, res) => {
                 const newOption = new Option({
                     optionText: optionText,
                     isCorrect: isCorrect,
-                    question: currentQuestion._id // Savol bilan bog'lash
+                    question: currentQuestion._id, // Savol bilan bog'lash
+                    fanId: fanId // Variantni fanga bog'lash
                 });
                 await newOption.save(); // Variantni saqlash
             }
