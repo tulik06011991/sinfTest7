@@ -84,12 +84,20 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(questions) && questions.map((question, index) => (
-                                    <tr key={question.id}>
-                                        <td className="py-2 px-4 border-b">{question.questionText}</td>
-                                        {/* <td className="py-2 px-4 border-b">{question.options.join(', ')}</td> */}
-                                    </tr>
-                                ))}
+                            {Array.isArray(questions) && questions.map((question, index) => (
+    <tr key={question._id}>
+        <td className="py-2 px-4 border-b">{question.questionText}</td>
+        <td className="py-2 px-4 border-b">
+            {Array.isArray(question.options) && question.options.map((option, optIndex) => (
+                <span key={option._id}>
+                    {option.optionText}
+                    {optIndex < question.options.length - 1 && ', '} {/* Oxirgi elementdan keyin vergul qo'shmaslik uchun */}
+                </span>
+            ))}
+        </td>
+    </tr>
+))}
+
                             </tbody>
                         </table>
                     </div>
