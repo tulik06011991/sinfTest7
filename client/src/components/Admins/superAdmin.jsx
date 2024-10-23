@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Router orqali yo'naltirish uchun
+import { useNavigate } from "react-router-dom"; // Routerdan useNavigate import qilamiz
 
 const SuperAdminPanel = () => {
+    const navigate = useNavigate(); // navigate funksiyasini yaratamiz
     const [users, setUsers] = useState([]);
     const [admins, setAdmins] = useState([]);
     const [fans, setFans] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '' });
     const [selectedUser, setSelectedUser] = useState(null);
-    const navigate = useNavigate(); // useNavigate hookini qo'shamiz
-
+    
     // Foydalanuvchilarni olish
     useEffect(() => {
         const getUsers = async () => {
@@ -22,7 +22,7 @@ const SuperAdminPanel = () => {
         };
         getUsers();
     }, []);
-
+    
     // Adminlar va fanlar uchun API chaqiriqlari
     useEffect(() => {
         const getAdminsAndFans = async () => {
@@ -70,23 +70,14 @@ const SuperAdminPanel = () => {
         }
     };
 
-    // Adminlar va fanlar sahifalariga yo'naltirish funksiyalari
-    const goToAdmins = () => {
-        navigate("/admins"); // Adminlar sahifasiga yo'naltirish
-    };
-
-    const goToFans = () => {
-        navigate("/adminFan"); // Fanlar sahifasiga yo'naltirish
-    };
-
     return (
-        <div className="container mx-auto p-8">
+        <div className="container mx-auto p-4 md:p-8">
             <h1 className="text-3xl font-bold mb-8 text-center">SuperAdmin Panel</h1>
             
             {/* Foydalanuvchilar bo'limi */}
             <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-4">Foydalanuvchilar</h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {users.map((user) => (
                         <div key={user._id} className="p-4 border rounded-md shadow-md">
                             <h3 className="text-lg font-bold">{user.name}</h3>
@@ -108,20 +99,20 @@ const SuperAdminPanel = () => {
                         </div>
                     ))}
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 flex space-x-2">
                     <input
                         type="text"
                         placeholder="Ism"
                         value={newUser.name}
                         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                        className="border p-2 rounded-md mr-2"
+                        className="border p-2 rounded-md flex-1"
                     />
                     <input
                         type="email"
                         placeholder="Email"
                         value={newUser.email}
                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                        className="border p-2 rounded-md mr-2"
+                        className="border p-2 rounded-md flex-1"
                     />
                     <button 
                         className="bg-green-500 text-white px-4 py-2 rounded"
@@ -137,11 +128,11 @@ const SuperAdminPanel = () => {
                 {/* Adminlar cardi */}
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Adminlar</h2>
-                    <button
+                    <button 
                         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-                        onClick={goToAdmins}
+                        onClick={() => navigate('/admins')} // Adminlar sahifasiga yo'naltirish
                     >
-                        Adminlar Sahifasiga O'tish
+                        Adminlar sahifasiga o'tish
                     </button>
                     <div className="grid grid-cols-1 gap-4">
                         {admins.map((admin) => (
@@ -156,11 +147,11 @@ const SuperAdminPanel = () => {
                 {/* Fanlar cardi */}
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Fanlar</h2>
-                    <button
+                    <button 
                         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-                        onClick={goToFans}
+                        onClick={() => navigate('/fans')} // Fanlar sahifasiga yo'naltirish
                     >
-                        Fanlar Sahifasiga O'tish
+                        Fanlar sahifasiga o'tish
                     </button>
                     <div className="grid grid-cols-1 gap-4">
                         {fans.map((fan) => (
