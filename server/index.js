@@ -8,6 +8,7 @@ const auth = require('./Routes/Auth')
 const savollar = require('./Routes/savollar')
 const admins = require('./Routes/Admins')
 const Test = require('./Routes/Test')
+const userRoute = require('./Routes/userRoutes');
 
 
 // Konfiguratsiyani yuklash
@@ -35,6 +36,7 @@ app.use('/auth', auth);
 app.use('/api', savollar)
 app.use('/admin', admins)
 app.use("/test", Test)
+app.use('/users', userRoute);
 
 // 404 sahifa topilmagan holat
 app.use((req, res, next) => {
