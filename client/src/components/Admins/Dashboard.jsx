@@ -2,32 +2,27 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const AdminDashboard = () => {
     const [questions, setQuestions] = useState([]);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const fanId = localStorage.getItem('fanId')
-    const navigate = useNavigate()
-    console.log(fanId);
-
+    const fanId = localStorage.getItem('fanId');
+    const navigate = useNavigate();
     
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
-    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        }
+    }, [navigate]);
 
     const fetchQuestions = async () => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`); // Savollarni olish uchun endpoint
+            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`);
             console.log(response.data);
-            
             setQuestions(response.data);
         } catch (err) {
             setError('Savollarni yuklashda xato.');
@@ -39,7 +34,7 @@ const AdminDashboard = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get('http://localhost:5000/api/results'); // Natijalarni olish uchun endpoint
+            const response = await axios.get('http://localhost:5000/api/results');
             setResults(response.data);
         } catch (err) {
             setError('Natijalarni yuklashda xato.');
@@ -48,13 +43,12 @@ const AdminDashboard = () => {
     };
 
     const handleDeleteAllQuestions = async () => {
-      
         setLoading(true);
         setError('');
         try {
-            await axios.delete(`http://localhost:5000/api/fan/${fanId}`); // Savollarni o'chirish uchun endpoint
-            setQuestions([]); // Savollarni o'chirgandan so'ng, state'ni yangilash
-            setError('Barcha savollar muvaffaqiyatli o\'chirildi.'); // Xabar berish
+            await axios.delete(`http://localhost:5000/api/fan/${fanId}`);
+            setQuestions([]);
+            setError('Barcha savollar muvaffaqiyatli o\'chirildi.');
         } catch (err) {
             setError('Savollarni o\'chirishda xato.');
         }
@@ -65,7 +59,6 @@ const AdminDashboard = () => {
         <div className="min-h-screen bg-gray-100 p-4">
             <h2 className="text-3xl font-bold mb-6 text-center">Admin Dashboard</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Savollar va variantlar kartasi */}
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold mb-4">Savollar va Variantlar</h3>
                     <button
@@ -91,7 +84,7 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {questions.map((question) => (
+                                {Array.isArray(questions) && questions.map((question) => (
                                     <tr key={question.id}>
                                         <td className="py-2 px-4 border-b">{question.question}</td>
                                         <td className="py-2 px-4 border-b">{question.options.join(', ')}</td>
@@ -102,7 +95,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Foydalanuvchilar natijalari kartasi */}
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold mb-4">Foydalanuvchilar Natijalari</h3>
                     <button
@@ -122,7 +114,7 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {results.map((result) => (
+                                {Array.isArray(results) && results.map((result) => (
                                     <tr key={result.id}>
                                         <td className="py-2 px-4 border-b">{result.username}</td>
                                         <td className="py-2 px-4 border-b">{result.score}</td>
