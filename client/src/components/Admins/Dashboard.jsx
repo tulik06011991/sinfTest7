@@ -6,6 +6,9 @@ const AdminDashboard = () => {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const fanId = localStorage.getItem('fanId')
+    console.log(fanId);
+    
 
     const fetchQuestions = async () => {
         setLoading(true);
@@ -32,10 +35,11 @@ const AdminDashboard = () => {
     };
 
     const handleDeleteAllQuestions = async () => {
+      
         setLoading(true);
         setError('');
         try {
-            await axios.delete('http://localhost:5000/api/questions'); // Savollarni o'chirish uchun endpoint
+            await axios.delete(`http://localhost:5000/api/fan/${fanId}`); // Savollarni o'chirish uchun endpoint
             setQuestions([]); // Savollarni o'chirgandan so'ng, state'ni yangilash
             setError('Barcha savollar muvaffaqiyatli o\'chirildi.'); // Xabar berish
         } catch (err) {
