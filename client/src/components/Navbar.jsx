@@ -64,7 +64,7 @@ const Navbar = () => {
                 <div className="flex flex-col space-y-2 px-4 pb-4">
                     {isLoggedIn ? (
                         <>
-                            {redirectUrl === '/superadmin/dashboard' && (
+                            {redirectUrl === '/admin/dashboard' && (
                                 <Link to="/upload" className="text-white bg-gray-500 hover:bg-blue-700 px-3 py-2 rounded">
                                     Fayl yuklash
                                 </Link>
