@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const FileUpload = () => {
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false); // Loader holatini qo'shish
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,6 +34,8 @@ const FileUpload = () => {
         formData.append('fanId', fanId); // fanId ni localStorage dan olingan qiymat bilan to'ldirish
         formData.append('file', file);
 
+        setLoading(true); // Yuklashni boshlanganda loading holatini yoqing
+
         try {
             const res = await axios.post('http://localhost:5000/api/quiz/upload', formData, {
                 headers: {
@@ -43,6 +46,8 @@ const FileUpload = () => {
         } catch (err) {
             console.error(err);
             setMessage('Faylni yuklashda xatolik yuz berdi!');
+        } finally {
+            setLoading(false); // Yuklash tugagandan so'ng loading holatini o'chiring
         }
     };
 
@@ -61,8 +66,12 @@ const FileUpload = () => {
                     />
                 </div>
 
-                <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200 w-full">
-                    Yuklash
+                <button 
+                    type="submit" 
+                    className={`bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={loading} // Yuklanayotgan paytda tugmani o'chirish
+                >
+                    {loading ? 'Yuklanmoqda...' : 'Yuklash'} {/* Yuklanayotgan paytda matnni o'zgartirish */}
                 </button>
             </form>
 
