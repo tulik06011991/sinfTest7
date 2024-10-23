@@ -22,8 +22,8 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Ro'yxatdan o'tish</h2>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <form onSubmit={handleRegister}>
