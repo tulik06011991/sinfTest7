@@ -28,7 +28,7 @@ const Navbar = () => {
                 <div className="hidden md:flex space-x-4">
                     {isLoggedIn ? (
                         <>
-                            {redirectUrl === '/superadmin/dashboard' && (
+                            {redirectUrl === '/admin/dashboard' && (
                                 <Link to="/upload" className="text-white hover:bg-blue-700 px-3 py-2 rounded">
                                     Fayl yuklash
                                 </Link>
