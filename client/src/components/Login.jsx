@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // Loader uchun state
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setError('');
+        setError("");
+        setLoading(true); // Loaderni ko'rsatish
 
         try {
             const userData = { email, password };
-            const response = await axios.post('http://localhost:5000/auth/login', userData);
-            console.log(response.data);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('url', response.data.redirectUrl); // Kirgan foydalanuvchi ma'lumotlarini ko'rish
+            const response = await axios.post("http://localhost:5000/auth/login", userData);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("url", response.data.redirectUrl);
 
-            // Foydalanuvchini kerakli sahifaga yo'naltirish
             const redirectUrl = response.data.redirectUrl;
-            if (redirectUrl === '/savolJavoblar') {
-                window.location.href = '/test'; // Savol javoblar sahifasiga yo'naltirish
-            } else if (redirectUrl === '/superadmin/dashboard') {
-                window.location.href = '/admins'; // Admin paneliga yo'naltirish
+            if (redirectUrl === "/savolJavoblar") {
+                window.location.href = "/test";
+            } else if (redirectUrl === "/superadmin/dashboard") {
+                window.location.href = "/admins";
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
         }
+
+        setLoading(false); // Loaderni yashirish
     };
 
     return (
@@ -34,6 +36,7 @@ const Login = () => {
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6 text-center">Tizimga kirish</h2>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
+                {loading && <p className="text-center">Yuklanmoqda...</p>} {/* Loader */}
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
                         <label className="block text-sm font-semibold mb-2" htmlFor="email">Email</label>
@@ -60,6 +63,7 @@ const Login = () => {
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition duration-200"
+                        disabled={loading} // Loader ishlayotgan paytda disable qilish
                     >
                         Kirish
                     </button>
