@@ -16,19 +16,15 @@ const AdminCRUD = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Local storage'da tokenni tekshirish
-        const token = localStorage.getItem('token');
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
-        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
-        if (!token) {
-            navigate('/login'); // Login sahifasining yo'li
-        }
-    }, [navigate]);
-
-  // Adminlar ro'yxatini olish
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
@@ -44,7 +40,6 @@ const AdminCRUD = () => {
     fetchAdmins();
   }, []);
 
-  // Form ma'lumotlarini boshqarish
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -52,12 +47,10 @@ const AdminCRUD = () => {
     });
   };
 
-  // Yangi admin yaratish yoki mavjud adminni yangilash
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (editing) {
-      // Adminni yangilash
       try {
         await axios.put(`http://localhost:5000/admin/admin/${currentAdminId}`, formData);
         setMessage("Admin muvaffaqiyatli yangilandi!");
@@ -78,11 +71,8 @@ const AdminCRUD = () => {
         setMessage("Adminni yangilashda xatolik yuz berdi!");
       }
     } else {
-      // Yangi admin yaratish
       try {
         const response = await axios.post("http://localhost:5000/admin/admin", formData);
-        console.log(response.data)
-        
         setAdmins([...admins, response.data]);
         setMessage("Admin muvaffaqiyatli yaratildi!");
         setFormData({
@@ -98,7 +88,6 @@ const AdminCRUD = () => {
     }
   };
 
-  // Adminni o'chirish
   const deleteAdmin = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/admin/admin/${id}`);
@@ -109,7 +98,6 @@ const AdminCRUD = () => {
     }
   };
 
-  // Adminni tahrirlashga tayyorlash
   const editAdmin = (admin) => {
     setEditing(true);
     setCurrentAdminId(admin._id);
@@ -152,15 +140,20 @@ const AdminCRUD = () => {
         <input
           type="password"
           name="password"
-          placeholder="Parol"
+          placeholder="Admin paroli"
           value={formData.password}
           onChange={handleChange}
-          required={!editing} // Tahrirlashda parol bo'sh bo'lishi mumkin
+          required
           className="border border-gray-300 p-2 rounded w-full mb-4"
         />
-        <select name="role" value={formData.role} onChange={handleChange} className="border border-gray-300 p-2 rounded w-full mb-4">
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className="border border-gray-300 p-2 rounded w-full mb-4"
+        >
           <option value="admin">Admin</option>
-          <option value="superadmin">Superadmin</option>
+          <option value="user">Foydalanuvchi</option>
         </select>
         <input
           type="text"
@@ -171,26 +164,35 @@ const AdminCRUD = () => {
           required
           className="border border-gray-300 p-2 rounded w-full mb-4"
         />
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200 w-full">
+        <button
+          type="submit"
+          className="bg-indigo-600 text-white px-4 py-2 rounded w-full hover:bg-indigo-700 transition"
+        >
           {editing ? "Yangilash" : "Yaratish"}
         </button>
       </form>
 
-      {message && <p className="text-center text-green-500 mb-4">{message}</p>}
+      {message && <p className="text-green-500 text-center mb-4">{message}</p>}
 
-      <h2 className="text-2xl font-semibold mb-4">Adminlar Ro'yxati</h2>
+      <h2 className="text-2xl font-semibold mb-4">Adminlar ro'yxati</h2>
       <ul className="bg-white rounded-lg shadow-md">
         {admins.map((admin) => (
-          <li key={admin._id} className="flex justify-between items-center p-4 border-b border-gray-300">
+          <li key={admin._id} className="flex justify-between items-center p-4 border-b border-gray-200">
             <div>
-              <h3 className="font-bold">{admin.name}</h3>
-              <p>{admin.email} - {admin.role} ({admin.subject})</p>
+              <h3 className="font-semibold">{admin.name}</h3>
+              <p>{admin.email}</p>
             </div>
-            <div className="flex space-x-2">
-              <button onClick={() => editAdmin(admin)} className="bg-yellow-500 text-white p-1 rounded hover:bg-yellow-600">
+            <div>
+              <button
+                onClick={() => editAdmin(admin)}
+                className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+              >
                 Tahrirlash
               </button>
-              <button onClick={() => deleteAdmin(admin._id)} className="bg-red-500 text-white p-1 rounded hover:bg-red-600">
+              <button
+                onClick={() => deleteAdmin(admin._id)}
+                className="bg-red-500 text-white px-2 py-1 rounded"
+              >
                 O'chirish
               </button>
             </div>

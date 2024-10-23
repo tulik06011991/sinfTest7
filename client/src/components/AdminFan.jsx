@@ -8,17 +8,17 @@ const CreateFan = () => {
   const [adminParoli, setAdminParoli] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
 
+  const navigate = useNavigate();
 
-  const navigate= useNavigate()
-    useEffect(() => {
-        // Local storage'da tokenni tekshirish
-        const token = localStorage.getItem('token');
+  useEffect(() => {
+    // Local storage'da tokenni tekshirish
+    const token = localStorage.getItem('token');
 
-        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
-        if (!token) {
-            navigate('/login'); // Login sahifasining yo'li
-        }
-    }, [navigate]);
+    // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
+    if (!token) {
+      navigate('/login'); // Login sahifasining yo'li
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const CreateFan = () => {
       fanNomi,
       adminNomi,
       adminParoli,
-      adminEmail
+      adminEmail,
     };
 
     try {
@@ -51,8 +51,8 @@ const CreateFan = () => {
   };
 
   return (
-    <div className="container mx-auto my-10">
-      <h2 className="text-2xl font-bold mb-6">Fan Yaratish</h2>
+    <div className="container mx-auto my-10 p-4 sm:p-6 lg:p-8">
+      <h2 className="text-2xl font-bold mb-6 text-center">Fan Yaratish</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Fan Nomi:</label>
@@ -60,7 +60,7 @@ const CreateFan = () => {
             type="text" 
             value={fanNomi} 
             onChange={(e) => setFanNomi(e.target.value)} 
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2"
             required
           />
         </div>
@@ -71,7 +71,7 @@ const CreateFan = () => {
             type="text" 
             value={adminNomi} 
             onChange={(e) => setAdminNomi(e.target.value)} 
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2"
             required
           />
         </div>
@@ -82,7 +82,7 @@ const CreateFan = () => {
             type="password" 
             value={adminParoli} 
             onChange={(e) => setAdminParoli(e.target.value)} 
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2"
             required
           />
         </div>
@@ -93,14 +93,14 @@ const CreateFan = () => {
             type="email" 
             value={adminEmail} 
             onChange={(e) => setAdminEmail(e.target.value)} 
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2"
             required
           />
         </div>
 
         <button 
           type="submit" 
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 w-full"
         >
           Yaratish
         </button>
