@@ -10,7 +10,9 @@ import Test from './components/Test';
 import Admin from './components/Admins/Admins';
 import SuperAdminPanel from './components/Admins/superAdmin';
 
+
 import './App.css';
+import AdminDashboard from './components/Admins/Dashboard';
 
 function App() {
   return (
@@ -27,7 +29,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/test" element={<Test />} />
             <Route path="/admins" element={<Admin />} />
-            <Route path="/superadmin" element={<SuperAdminPanel />} /> {/* Admin sahifasi */}
+            <Route path="/superadmin" element={<SuperAdminPanel />} />
+            <Route path="/admindashbaord" element={<AdminDashboard />} /> {/* Admin sahifasi */}
 
 
             {/* Mavjud bo'lmagan yo'lga kirilganda login sahifasiga yo'naltirish */}
