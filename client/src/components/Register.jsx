@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // React Router dan import qilish
 
 const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // useNavigate hookini chaqirish
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -15,7 +17,9 @@ const Register = () => {
             const userData = { username, email, password };
             const response = await axios.post('http://localhost:5000/auth/register', userData);
             console.log(response.data); // Ro'yxatdan o'tgan foydalanuvchi ma'lumotlarini ko'rish
-            // Ro'yxatdan o'tgandan keyin foydalanuvchini yo'naltirish mumkin
+            
+            // Muvaffaqiyatli ro'yxatdan o'tgandan so'ng, login sahifasiga yo'naltirish
+            navigate('/login'); // Yo'naltirish
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
         }
