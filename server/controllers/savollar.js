@@ -1,15 +1,16 @@
 const Question = require('../models/Questions'); // Savollar modelini import qilish
 const Option = require('../models/Options'); // Variantlar modelini import qilish
 
-exports.getQuestionsWithOptions = async (req, res) => {
-    const { fanId } = req.params;
-    console.log(fanId);
-     // URL dan fan ID ni olish
+exports.getQuestionsWithOptionsByFanId = async (req, res) => {
+    const { fanId } = req.params; // URL dan fan ID ni olish
 
     try {
         // Foydalanuvchidan fan ID ga muvofiq savollarni olish
         const questions = await Question.find({ fanId }) // Fan ID ga muvofiq savollarni qidiring
-            .populate('options'); // options fieldini populate qilish
+            .populate({
+                path: 'options', // Variantlarni populate qilish
+                match: { fanId } // Faqat fanId ga muvofiq variantlarni olish
+            });
 
         if (!questions.length) {
             return res.status(404).json({ message: "Savollar topilmadi!" });
