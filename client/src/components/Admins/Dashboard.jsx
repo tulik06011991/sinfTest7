@@ -14,7 +14,7 @@ const AdminDashboard = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get('http://localhost:5000/api/questions'); // Savollarni olish uchun endpoint
+            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`); // Savollarni olish uchun endpoint
             setQuestions(response.data);
         } catch (err) {
             setError('Savollarni yuklashda xato.');
