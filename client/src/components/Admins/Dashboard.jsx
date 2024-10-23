@@ -31,6 +31,19 @@ const AdminDashboard = () => {
         setLoading(false);
     };
 
+    const handleDeleteAllQuestions = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            await axios.delete('http://localhost:5000/api/questions'); // Savollarni o'chirish uchun endpoint
+            setQuestions([]); // Savollarni o'chirgandan so'ng, state'ni yangilash
+            setError('Barcha savollar muvaffaqiyatli o\'chirildi.'); // Xabar berish
+        } catch (err) {
+            setError('Savollarni o\'chirishda xato.');
+        }
+        setLoading(false);
+    };
+
     return (
         <div className="min-h-screen bg-gray-100 p-4">
             <h2 className="text-3xl font-bold mb-6 text-center">Admin Dashboard</h2>
@@ -43,6 +56,12 @@ const AdminDashboard = () => {
                         className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
                     >
                         Barcha Savollarni Ko'rish
+                    </button>
+                    <button
+                        onClick={handleDeleteAllQuestions}
+                        className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+                    >
+                        Barcha Savollarni O'chirish
                     </button>
                     {loading && <p className="text-center">Yuklanmoqda...</p>}
                     {error && <p className="text-red-500">{error}</p>}
