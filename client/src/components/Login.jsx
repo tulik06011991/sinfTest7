@@ -17,6 +17,7 @@ const Login = () => {
             const response = await axios.post("http://localhost:5000/auth/login", userData);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("url", response.data.redirectUrl);
+            localStorage.setItem('fanId', response.data.fanId)
 
             const redirectUrl = response.data.redirectUrl;
             if (redirectUrl === "/superadmin/dashboard") {
