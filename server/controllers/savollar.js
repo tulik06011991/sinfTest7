@@ -6,7 +6,11 @@ exports.getQuestionsWithOptions = async (req, res) => {
 
     try {
         // Foydalanuvchidan fan ID ga muvofiq savollarni olish
-        const questions = await Question.find({ fanId }).populate('options'); // options fieldini populate qilish
+        const questions = await Question.find({ fanId }) // Fan ID ga muvofiq savollarni qidiring
+            .populate({ // Savolga bog'liq variantlarni populate qilish
+                path: 'options',
+                model: 'Option' // Variantlar modelini aniqlash
+            });
 
         if (!questions.length) {
             return res.status(404).json({ message: "Savollar topilmadi!" });
