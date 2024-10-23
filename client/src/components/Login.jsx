@@ -22,7 +22,7 @@ const Login = () => {
             if (redirectUrl === "/savolJavoblar") {
                 window.location.href = "/test";
             } else if (redirectUrl === "/superadmin/dashboard") {
-                window.location.href = "/admins";
+                window.location.href = "/superadmin";
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
