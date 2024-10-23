@@ -44,7 +44,7 @@ exports.login = async (req, res) => {
             // 2. Admin bilan bog'liq fanni topish
             const fan = await Fan.findOne({ adminEmail: email });
             if (fan) {
-                fanId = fan.fanId;  // Adminning fanId si olindi
+                fanId = fan._id;  // Adminning fanId si olindi (mavjud bo'lsa)
             }
         } else {
             // 3. Agar admin topilmasa, User modelidan izlash
@@ -90,6 +90,7 @@ exports.login = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error); // Xatoni konsolga chiqarish
         res.status(500).json({ message: "Serverda xatolik yuz berdi!" });
     }
 };
