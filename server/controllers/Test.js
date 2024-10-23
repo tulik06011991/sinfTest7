@@ -1,6 +1,7 @@
 const Fan = require('../models/Subject');
 const Question = require('../models/Questions');
 const Option = require('../models/Options');
+const Result = require('../models/Result');
 
 // Fanlar ro'yxatini olish
 exports.getFanlar = async (req, res) => {
@@ -40,11 +41,11 @@ exports.getSavollarByFan = async (req, res) => {
     }
 };
 
-// Javoblarni tekshirish
+
+
 exports.checkAnswers = async (req, res) => {
-    const { answers } = req.body;
-    console.log(answers);
-    
+    const { answers, fanId, userId } = req.body; // Foydalanuvchi va fan ID olamiz
+    console.log(answers, fanId, userId);
 
     try {
         let correctCount = 0;
@@ -63,15 +64,29 @@ exports.checkAnswers = async (req, res) => {
             }
         }
 
-        const score = (correctCount / totalQuestions) * 100;
+        const score = (correctCount / totalQuestions) * 100; // Foydalanuvchining foiz ballini hisoblaymiz
 
+        // Natijani saqlash
+        const newResult = new Result({
+            fanId,           // Fanning ID si
+            userId,          // Foydalanuvchining ID si
+            correctCount,    // To'g'ri javoblar soni
+            totalQuestions,  // Umumiy savollar soni
+            score            // Hisoblangan foiz natija
+        });
+
+        await newResult.save(); // Natijani bazaga saqlaymiz
+
+        // Foydalanuvchiga natijani qaytaramiz
         res.status(200).json({
-            message: "Natijalar hisoblandi",
+            message: "Natijalar hisoblandi va saqlandi",
             correctCount,
             totalQuestions,
             score
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "Javoblarni tekshirishda xatolik yuz berdi!" });
     }
 };
+

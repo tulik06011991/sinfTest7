@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode"; // jwt-decode kutubxonasini import qilish
 
 const QuizComponent = () => {
     const [fanlar, setFanlar] = useState([]);
@@ -8,7 +9,8 @@ const QuizComponent = () => {
     const [savollar, setSavollar] = useState([]);
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);
-    const navigate= useNavigate()
+    const [userId, setUserId] = useState(""); // userId uchun state
+    const navigate = useNavigate();
 
     // Fanlar ro'yxatini olish
     useEffect(() => {
@@ -22,6 +24,7 @@ const QuizComponent = () => {
         };
         getFanlar();
     }, []);
+
     useEffect(() => {
         // Local storage'da tokenni tekshirish
         const token = localStorage.getItem('token');
@@ -29,6 +32,10 @@ const QuizComponent = () => {
         // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
         if (!token) {
             navigate('/login'); // Login sahifasining yo'li
+        } else {
+            // Tokenni decode qilib, undagi userId ni olish
+            const decoded = jwtDecode(token);
+            setUserId(decoded.userId); // userId ni saqlash
         }
     }, [navigate]);
 
@@ -54,8 +61,15 @@ const QuizComponent = () => {
 
     // Javoblarni yuborish va natijani ko'rsatish
     const handleSubmit = async () => {
+        if (!selectedFan) {
+            console.error("Fan tanlanmagan");
+            return;
+        }
+
         try {
             const response = await axios.post("http://localhost:5000/test/tekshirJavoblar", {
+                fanId: selectedFan, // fanId ni qo'shamiz
+                userId, // userId ni qo'shamiz
                 answers: Object.keys(answers).map((questionId) => ({
                     questionId,
                     selectedOption: answers[questionId],
