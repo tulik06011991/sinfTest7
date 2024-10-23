@@ -21,7 +21,7 @@ const createFan = async (req, res) => {
       adminNomi,
       adminParoli: hashedPassword, // shifrlangan parol
       adminEmail
-      // fanId ni kiritmaslik, Mongoose avtomatik ravishda yaratadi
+      // fanId ni qo'shmaymiz, Mongoose avtomatik ravishda yaratadi
     });
 
     // Fan saqlash
@@ -33,5 +33,6 @@ const createFan = async (req, res) => {
     res.status(500).json({ error: "Xatolik yuz berdi, fanni yaratib bo'lmadi." });
   }
 };
+
 
 module.exports = { createFan };
