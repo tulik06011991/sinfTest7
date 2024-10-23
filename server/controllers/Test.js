@@ -45,7 +45,7 @@ exports.getSavollarByFan = async (req, res) => {
 
 exports.checkAnswers = async (req, res) => {
     const { answers, fanId, userId } = req.body; // Foydalanuvchi va fan ID olamiz
-    console.log(answers, fanId, userId);
+    // console.log(answers, fanId, userId);
 
     try {
         let correctCount = 0;
