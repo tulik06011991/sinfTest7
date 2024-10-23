@@ -61,18 +61,20 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold mb-4">Savollar va Variantlar</h3>
-                    <button
-                        onClick={fetchQuestions}
-                        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
-                    >
-                        Barcha Savollarni Ko'rish
-                    </button>
-                    <button
-                        onClick={handleDeleteAllQuestions}
-                        className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200"
-                    >
-                        Barcha Savollarni O'chirish
-                    </button>
+                    <div className="flex gap-4 mb-4">
+                        <button
+                            onClick={fetchQuestions}
+                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
+                        >
+                            Barcha Savollarni Ko'rish
+                        </button>
+                        <button
+                            onClick={handleDeleteAllQuestions}
+                            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+                        >
+                            Barcha Savollarni O'chirish
+                        </button>
+                    </div>
                     {loading && <p className="text-center">Yuklanmoqda...</p>}
                     {error && <p className="text-red-500">{error}</p>}
                     <div className="mt-4 overflow-x-auto">
@@ -85,19 +87,22 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                             {Array.isArray(questions) && questions.map((question, index) => (
-    <tr key={question._id}>
-        <td className="py-2 px-4 border-b">{question.questionText}</td>
-        <td className="py-2 px-4 border-b">
-            {Array.isArray(question.options) && question.options.map((option, optIndex) => (
-                <span key={option._id}>
-                    {option.optionText}
-                    {optIndex < question.options.length - 1 && ', '} {/* Oxirgi elementdan keyin vergul qo'shmaslik uchun */}
-                </span>
-            ))}
-        </td>
-    </tr>
-))}
-
+                                <tr key={question._id}>
+                                    <td className="py-2 px-4 border-b">{question.questionText}</td>
+                                    <td className="py-2 px-4 border-b">
+                                        <div className="flex flex-wrap gap-2">
+                                            {Array.isArray(question.options) && question.options.map((option, optIndex) => (
+                                                <span 
+                                                    key={option._id}
+                                                    className={`inline-block px-2 py-1 rounded-lg ${option.isCorrect ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}
+                                                >
+                                                    {option.optionText}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
