@@ -43,6 +43,8 @@ exports.getSavollarByFan = async (req, res) => {
 // Javoblarni tekshirish
 exports.checkAnswers = async (req, res) => {
     const { answers } = req.body;
+    console.log(answers);
+    
 
     try {
         let correctCount = 0;
