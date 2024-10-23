@@ -13,7 +13,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token'); // Tokenni o'chirish
         localStorage.removeItem('url'); // redirectUrl ni o'chirish
-        navigate('/login'); // Foydalanuvchini login sahifasiga yo'naltirish
+        navigate('/'); // Foydalanuvchini login sahifasiga yo'naltirish
     };
 
     const isLoggedIn = !!localStorage.getItem('token');
