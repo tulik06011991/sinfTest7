@@ -1,8 +1,7 @@
-const { v4: uuidv4 } = require('uuid'); // uuid kutubxonasini import qilish
-const Fan = require('../models/Subject');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Fan = require('../models/Subject'); // O'z Fan modelingizga yo'l ko'rsating
 
-// Fan yaratish controller
 const createFan = async (req, res) => {
   const { fanNomi, adminNomi, adminParoli, adminEmail } = req.body;
 
@@ -18,11 +17,11 @@ const createFan = async (req, res) => {
 
     // Yangi fan yaratish
     const newFan = new Fan({
-      fanId: uuidv4(), // avtomatik yaratilgan fanId
       fanNomi,
       adminNomi,
       adminParoli: hashedPassword, // shifrlangan parol
       adminEmail
+      // fanId ni kiritmaslik, Mongoose avtomatik ravishda yaratadi
     });
 
     // Fan saqlash
