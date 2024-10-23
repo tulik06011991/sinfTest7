@@ -76,7 +76,7 @@ const SuperAdminPanel = () => {
     };
 
     const goToFans = () => {
-        navigate("/fans"); // Fanlar sahifasiga yo'naltirish
+        navigate("/adminFan"); // Fanlar sahifasiga yo'naltirish
     };
 
     return (
