@@ -1,25 +1,33 @@
-const Question = require('../models/Questions'); // Savollar modelini import qilish
-const Option = require('../models/Options'); // Variantlar modelini import qilish
+const Question = require('../models/Questions');  // Question modelini import qilish
+const Option = require('../models/Options');      // Option modelini import qilish
 
-exports.getQuestionsWithOptionsByFanId = async (req, res) => {
-    const { fanId } = req.params; // URL dan fan ID ni olish
+// Savollar va variantlarni olish controlleri
+const getQuestionsByFanId = async (req, res) => {
+    const { fanId } = req.params; // frontenddan yuborilgan fanId params orqali olinadi
 
     try {
-        // Foydalanuvchidan fan ID ga muvofiq savollarni olish
-        const questions = await Question.find({ fanId }) // Fan ID ga muvofiq savollarni qidiring
-            .populate('options'); // Variantlarni populate qilish
+        // Berilgan fanId ga mos savollarni options bilan birga olish
+        const questions = await Question.find({ fanId })
+            .populate({
+                path: 'options',
+                model: 'Option',
+                select: 'optionText isCorrect', // Kerakli maydonlarni tanlash
+            });
 
-        if (!questions.length) {
-            return res.status(404).json({ message: "Savollar topilmadi!" });
+        // Agar savollar topilmasa, xatolik qaytarish
+        if (!questions || questions.length === 0) {
+            return res.status(404).json({ message: 'Savollar topilmadi' });
         }
 
-        // Savollarni va ularning variantlarini foydalanuvchiga qaytarish
-        res.status(200).json({
-            message: "Savollar muvaffaqiyatli olindi!",
-            questions
-        });
+        // Savollarni variantlari bilan birga qaytarish
+        res.status(200).json(questions);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Serverda xatolik yuz berdi!" });
+        console.error('Xatolik:', error);
+        res.status(500).json({ message: 'Serverda xatolik yuz berdi' });
     }
 };
+
+module.exports = {
+    getQuestionsByFanId,
+};
+

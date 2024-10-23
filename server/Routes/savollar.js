@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getQuestionsWithOptionsByFanId } = require('../controllers/savollar');
+const { getQuestionsByFanId } = require('../controllers/savollar');
 
 // Fan ID ga muvofiq savollarni olish
-router.get('/questions/:fanId', getQuestionsWithOptionsByFanId);
+router.get('/questions/:fanId', getQuestionsByFanId);
 
 module.exports = router;
