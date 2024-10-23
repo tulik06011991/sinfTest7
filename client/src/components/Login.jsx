@@ -19,10 +19,12 @@ const Login = () => {
             localStorage.setItem("url", response.data.redirectUrl);
 
             const redirectUrl = response.data.redirectUrl;
-            if (redirectUrl === "/savolJavoblar") {
-                window.location.href = "/test";
-            } else if (redirectUrl === "/superadmin/dashboard") {
+            if (redirectUrl === "/superadmin/dashboard") {
                 window.location.href = "/superadmin";
+            } else if (redirectUrl === "/admin/dashboard") {
+                window.location.href = "/admindashbaord";
+            }else {
+                window.location.href = "/test";
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
