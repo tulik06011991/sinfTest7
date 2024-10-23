@@ -84,10 +84,10 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(questions) && questions.map((question) => (
+                                {Array.isArray(questions) && questions.map((question, index) => (
                                     <tr key={question.id}>
-                                        <td className="py-2 px-4 border-b">{question.question}</td>
-                                        <td className="py-2 px-4 border-b">{question.options.join(', ')}</td>
+                                        <td className="py-2 px-4 border-b">{question.questionText}</td>
+                                        {/* <td className="py-2 px-4 border-b">{question.options.join(', ')}</td> */}
                                     </tr>
                                 ))}
                             </tbody>
