@@ -2,7 +2,9 @@ const Question = require('../models/Questions'); // Savollar modelini import qil
 const Option = require('../models/Options'); // Variantlar modelini import qilish
 
 exports.getQuestionsWithOptions = async (req, res) => {
-    const { fanId } = req.params; // URL dan fan ID ni olish
+    const { fanId } = req.params;
+    console.log(fanId);
+     // URL dan fan ID ni olish
 
     try {
         // Foydalanuvchidan fan ID ga muvofiq savollarni olish
