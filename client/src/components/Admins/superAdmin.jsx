@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Router orqali yo'naltirish uchun
 
 const SuperAdminPanel = () => {
     const [users, setUsers] = useState([]);
@@ -7,7 +8,8 @@ const SuperAdminPanel = () => {
     const [fans, setFans] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '' });
     const [selectedUser, setSelectedUser] = useState(null);
-    
+    const navigate = useNavigate(); // useNavigate hookini qo'shamiz
+
     // Foydalanuvchilarni olish
     useEffect(() => {
         const getUsers = async () => {
@@ -20,7 +22,7 @@ const SuperAdminPanel = () => {
         };
         getUsers();
     }, []);
-    
+
     // Adminlar va fanlar uchun API chaqiriqlari
     useEffect(() => {
         const getAdminsAndFans = async () => {
@@ -66,6 +68,15 @@ const SuperAdminPanel = () => {
         } catch (error) {
             console.error("Foydalanuvchini o'chirishda xatolik yuz berdi.");
         }
+    };
+
+    // Adminlar va fanlar sahifalariga yo'naltirish funksiyalari
+    const goToAdmins = () => {
+        navigate("/admins"); // Adminlar sahifasiga yo'naltirish
+    };
+
+    const goToFans = () => {
+        navigate("/fans"); // Fanlar sahifasiga yo'naltirish
     };
 
     return (
@@ -122,10 +133,16 @@ const SuperAdminPanel = () => {
             </div>
 
             {/* Adminlar va Fanlar bo'limi */}
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Adminlar cardi */}
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Adminlar</h2>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                        onClick={goToAdmins}
+                    >
+                        Adminlar Sahifasiga O'tish
+                    </button>
                     <div className="grid grid-cols-1 gap-4">
                         {admins.map((admin) => (
                             <div key={admin._id} className="p-4 border rounded-md shadow-md">
@@ -139,6 +156,12 @@ const SuperAdminPanel = () => {
                 {/* Fanlar cardi */}
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Fanlar</h2>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                        onClick={goToFans}
+                    >
+                        Fanlar Sahifasiga O'tish
+                    </button>
                     <div className="grid grid-cols-1 gap-4">
                         {fans.map((fan) => (
                             <div key={fan._id} className="p-4 border rounded-md shadow-md">
