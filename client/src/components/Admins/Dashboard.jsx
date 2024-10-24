@@ -29,11 +29,14 @@ const AdminDashboard = () => {
         setLoading(false);
     };
 
+    // Fan ID bo'yicha natijalarni olish
     const fetchResults = async () => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get('http://localhost:5000/api/results');
+            const response = await axios.get(`http://localhost:5000/api/results/${fanId}`); 
+            console.log(response.data);
+            // fanId ga asoslangan so'rov
             setResults(response.data);
         } catch (err) {
             setError('Natijalarni yuklashda xato.');
@@ -90,9 +93,7 @@ const AdminDashboard = () => {
                                             {Array.isArray(question.options) && question.options.map((option) => (
                                                 <span
                                                     key={option._id}
-                                                    className={`font-bold ${
-                                                        option.isCorrect ? 'text-green-500' : 'text-gray-700'
-                                                    }`}
+                                                    className={`font-bold ${option.isCorrect ? 'text-green-500' : 'text-gray-700'}`}
                                                 >
                                                     {option.optionText}
                                                     {option !== question.options[question.options.length - 1] && ', '}
@@ -122,13 +123,17 @@ const AdminDashboard = () => {
                                 <tr>
                                     <th className="py-2 px-4 border-b">Foydalanuvchi</th>
                                     <th className="py-2 px-4 border-b">Natija</th>
+                                    <th className="py-2 px-4 border-b">Umumiy Savollar</th>
+                                    <th className="py-2 px-4 border-b">To'g'ri Javoblar</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {Array.isArray(results) && results.map((result) => (
-                                    <tr key={result.id}>
-                                        <td className="py-2 px-4 border-b">{result.username}</td>
+                                    <tr key={result._id}>
+                                        <td className="py-2 px-4 border-b">{result.userId.name}</td> {/* Foydalanuvchi ismi */}
                                         <td className="py-2 px-4 border-b">{result.score}</td>
+                                        <td className="py-2 px-4 border-b">{result.totalQuestions}</td> {/* Umumiy savollar */}
+                                        <td className="py-2 px-4 border-b">{result.correctCount}</td> {/* To'g'ri javoblar */}
                                     </tr>
                                 ))}
                             </tbody>
