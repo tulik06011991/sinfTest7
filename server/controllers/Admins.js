@@ -82,14 +82,19 @@ exports.deleteAdmin = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const admin = await Admin.findById(id);
+        // ID orqali adminni topib va o'chirish
+        const admin = await Admin.findByIdAndDelete(id);
+
+        // Agar admin topilmasa
         if (!admin) {
             return res.status(404).json({ message: 'Admin topilmadi!' });
         }
 
-        await admin.remove();
+        // Admin muvaffaqiyatli o'chirildi
         res.status(200).json({ message: 'Admin muvaffaqiyatli o\'chirildi!' });
     } catch (error) {
+        // Serverda xatolik yuz berganda
         res.status(500).json({ message: 'Serverda xatolik yuz berdi!', error });
     }
 };
+
