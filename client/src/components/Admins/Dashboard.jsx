@@ -18,10 +18,15 @@ const AdminDashboard = () => {
     }, [navigate]);
 
     const fetchQuestions = async () => {
+        const token = localStorage.getItem('token');
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`);
+            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,  // Tokenni yuborish
+                },
+            });
             setQuestions(response.data);
         } catch (err) {
             setError('Savollarni yuklashda xato.');
@@ -31,10 +36,15 @@ const AdminDashboard = () => {
 
     // Fan ID bo'yicha natijalarni olish
     const fetchResults = async () => {
+        const token = localStorage.getItem('token');
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get(`http://localhost:5000/api/results/${fanId}`); 
+            const response = await axios.get(`http://localhost:5000/api/results/${fanId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,  // Tokenni yuborish
+                },
+            });
             console.log(response.data); // Natijalar strukturasini ko'rish
             setResults(response.data);
         } catch (err) {
@@ -44,14 +54,38 @@ const AdminDashboard = () => {
     };
 
     const handleDeleteAllQuestions = async () => {
+        const token = localStorage.getItem('token');
         setLoading(true);
         setError('');
         try {
-            await axios.delete(`http://localhost:5000/api/fan/${fanId}`);
+            await axios.delete(`http://localhost:5000/api/fan/${fanId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,  // Tokenni yuborish
+                },
+            });
             setQuestions([]);
             setError('Barcha savollar muvaffaqiyatli o\'chirildi.');
         } catch (err) {
             setError('Savollarni o\'chirishda xato.');
+        }
+        setLoading(false);
+    };
+
+    // Foydalanuvchini natijalaridan o'chirish funksiyasi
+    const handleDeleteUserResult = async (userId) => {
+        const token = localStorage.getItem('token');
+        setLoading(true);
+        setError('');
+        try {
+            await axios.delete(`http://localhost:5000/api/results/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,  // Tokenni yuborish
+                },
+            });
+            setResults(results.filter(result => result._id !== userId)); // O'chirilgan foydalanuvchini natijalar ro'yxatidan chiqarish
+            setError('Foydalanuvchi natijasi muvaffaqiyatli o\'chirildi.');
+        } catch (err) {
+            setError('Natijani o\'chirishda xato.');
         }
         setLoading(false);
     };
@@ -97,10 +131,10 @@ const AdminDashboard = () => {
                                                     {option.optionText}
                                                     {option !== question.options[question.options.length - 1] && ', '}
                                                 </span>
-                                            ))}
+                                            ))}  
                                         </td>
                                     </tr>
-                                ))}
+                                ))}  
                             </tbody>
                         </table>
                     </div>
@@ -124,6 +158,7 @@ const AdminDashboard = () => {
                                     <th className="py-2 px-4 border-b">Natija</th>
                                     <th className="py-2 px-4 border-b">Umumiy Savollar</th>
                                     <th className="py-2 px-4 border-b">To'g'ri Javoblar</th>
+                                    <th className="py-2 px-4 border-b">Amallar</th> {/* O'chirish uchun ustun qo'shildi */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,6 +168,14 @@ const AdminDashboard = () => {
                                         <td className="py-2 px-4 border-b">{result.score || 0}</td>
                                         <td className="py-2 px-4 border-b">{result.totalQuestions || 0}</td>
                                         <td className="py-2 px-4 border-b">{result.correctAnswers || 0}</td>
+                                        <td className="py-2 px-4 border-b">
+                                            <button
+                                                onClick={() => handleDeleteUserResult(result._id)} // O'chirish tugmasi
+                                                className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition duration-200"
+                                            >
+                                                O'chirish
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
