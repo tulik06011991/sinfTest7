@@ -35,8 +35,7 @@ const AdminDashboard = () => {
         setError('');
         try {
             const response = await axios.get(`http://localhost:5000/api/results/${fanId}`); 
-            console.log(response.data);
-            // fanId ga asoslangan so'rov
+            console.log(response.data); // Natijalar strukturasini ko'rish
             setResults(response.data);
         } catch (err) {
             setError('Natijalarni yuklashda xato.');
@@ -130,10 +129,10 @@ const AdminDashboard = () => {
                             <tbody>
                                 {Array.isArray(results) && results.map((result) => (
                                     <tr key={result._id}>
-                                        <td className="py-2 px-4 border-b">{result.userId.name}</td> {/* Foydalanuvchi ismi */}
-                                        <td className="py-2 px-4 border-b">{result.score}</td>
-                                        <td className="py-2 px-4 border-b">{result.totalQuestions}</td> {/* Umumiy savollar */}
-                                        <td className="py-2 px-4 border-b">{result.correctCount}</td> {/* To'g'ri javoblar */}
+                                        <td className="py-2 px-4 border-b">{result.username || 'Noma'}</td>
+                                        <td className="py-2 px-4 border-b">{result.score || 0}</td>
+                                        <td className="py-2 px-4 border-b">{result.totalQuestions || 0}</td>
+                                        <td className="py-2 px-4 border-b">{result.correctAnswers || 0}</td>
                                     </tr>
                                 ))}
                             </tbody>
