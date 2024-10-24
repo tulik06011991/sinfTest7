@@ -29,6 +29,8 @@ const AdminCRUD = () => {
     const fetchAdmins = async () => {
       try {
         const response = await axios.get("http://localhost:5000/admin/admins");
+        console.log(response.data)
+        
         setAdmins(response.data);
         setLoading(false);
       } catch (error) {
