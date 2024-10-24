@@ -3,45 +3,30 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateFan = () => {
-  const [fanlar, setFanlar] = useState([]); // Available fanlar (subjects)
-  const [adminlar, setAdminlar] = useState([]); // Available admins
-  const [fanNomi, setFanNomi] = useState(''); // Selected fan
-  const [adminNomi, setAdminNomi] = useState(''); // Selected admin name
-  const [adminEmail, setAdminEmail] = useState(''); // Selected admin email
+  const [fanlar, setFanlar] = useState([]); // Fanlar ro'yxati
+  const [adminlar, setAdminlar] = useState([]); // Adminlar ro'yxati
+  const [fanNomi, setFanNomi] = useState(''); // Fan nomi
+  const [adminNomi, setAdminNomi] = useState(''); // Admin nomi
+  const [adminEmail, setAdminEmail] = useState(''); // Admin email
 
   const navigate = useNavigate();
 
-  // Fetch available fanlar and adminlar on component mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login');
     } else {
-      // Fetch fanlar (subjects)
-      axios
-        .get('http://localhost:5000/api/fan/adminFan', { headers: { Authorization: `Bearer ${token}` } })
-        .then((response) => {
-          
-          setFanlar(response.data);
-        })
-        .catch((error) => {
-          console.error('Fanlarni olishda xatolik:', error);
-        });
+      // Fanlar va adminlarni olish
+      axios.get('http://localhost:5000/api/fan/adminFan', { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => setFanlar(response.data))
+        .catch((error) => console.error('Fanlarni olishda xatolik:', error));
 
-      // Fetch adminlar (admins)
-      axios
-        .get('http://localhost:5000/admin/admins', { headers: { Authorization: `Bearer ${token}` } })
-        .then((response) => {
-          setAdminlar(response.data);
-        })
-        .catch((error) => {
-          console.error('Adminlarni olishda xatolik:', error);
-        });
+      axios.get('http://localhost:5000/admin/admins', { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => setAdminlar(response.data))
+        .catch((error) => console.error('Adminlarni olishda xatolik:', error));
     }
   }, [navigate]);
-  
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!fanNomi || !adminNomi || !adminEmail) {
@@ -49,11 +34,7 @@ const CreateFan = () => {
       return;
     }
 
-    const fanData = {
-      fanNomi,
-      adminNomi,
-      adminEmail,
-    };
+    const fanData = { fanNomi, adminNomi, adminEmail };
 
     try {
       const response = await axios.post('http://localhost:5000/api/fan/create', fanData);
@@ -62,17 +43,15 @@ const CreateFan = () => {
       setAdminNomi('');
       setAdminEmail('');
     } catch (error) {
-      console.error('Xatolik:', error);
+      console.error('Fanni yaratishda xatolik:', error);
       alert('Fanni yaratishda xatolik yuz berdi.');
     }
   };
 
-  // Handle admin selection (update email when admin name changes)
   const handleAdminChange = (e) => {
     const selectedAdminName = e.target.value;
     setAdminNomi(selectedAdminName);
 
-    // Find the selected admin's email
     const selectedAdmin = adminlar.find((admin) => admin.name === selectedAdminName);
     if (selectedAdmin) {
       setAdminEmail(selectedAdmin.email);
@@ -83,25 +62,17 @@ const CreateFan = () => {
     <div className="container mx-auto my-10 p-4 sm:p-6 lg:p-8">
       <h2 className="text-2xl font-bold mb-6 text-center">Fan Yaratish</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Fan Nomi Select */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Fan Nomi:</label>
-          <select
+          <input
+            type="text"
             value={fanNomi}
             onChange={(e) => setFanNomi(e.target.value)}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2"
             required
-          >
-            <option value="" disabled>Fan tanlang</option>
-            {fanlar.map((fan) => (
-              <option key={fan._id} value={fan.fanNomi}>
-                {fan.fanNomi}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
-        {/* Admin Nomi Select */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Admin Nomi:</label>
           <select
@@ -119,7 +90,6 @@ const CreateFan = () => {
           </select>
         </div>
 
-        {/* Admin Email (Automatically populated based on selected admin) */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Admin Email:</label>
           <input
@@ -139,7 +109,6 @@ const CreateFan = () => {
         </button>
       </form>
 
-      {/* Fanlar ro'yxati */}
       <div className="mt-10">
         <h3 className="text-xl font-bold mb-4">Fanlar va Adminlar</h3>
         {fanlar.length > 0 ? (
