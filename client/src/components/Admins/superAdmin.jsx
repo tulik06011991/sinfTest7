@@ -24,19 +24,19 @@ const SuperAdminPanel = () => {
     }, []);
     
     // Adminlar va fanlar uchun API chaqiriqlari
-    useEffect(() => {
-        const getAdminsAndFans = async () => {
-            try {
-                const adminsResponse = await axios.get("http://localhost:5000/admins");
-                const fansResponse = await axios.get("http://localhost:5000/fans");
-                setAdmins(adminsResponse.data);
-                setFans(fansResponse.data);
-            } catch (error) {
-                console.error("Adminlar va fanlarni olishda xatolik yuz berdi.");
-            }
-        };
-        getAdminsAndFans();
-    }, []);
+    // useEffect(() => {
+    //     const getAdminsAndFans = async () => {
+    //         try {
+    //             const adminsResponse = await axios.get("http://localhost:5000/admins");
+    //             const fansResponse = await axios.get("http://localhost:5000/fans");
+    //             setAdmins(adminsResponse.data);
+    //             setFans(fansResponse.data);
+    //         } catch (error) {
+    //             console.error("Adminlar va fanlarni olishda xatolik yuz berdi.");
+    //         }
+    //     };
+    //     getAdminsAndFans();
+    // }, []);
 
     // Yangi foydalanuvchi qo'shish
     const addUser = async () => {
