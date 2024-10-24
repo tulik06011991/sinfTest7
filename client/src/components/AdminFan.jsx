@@ -3,43 +3,34 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateFan = () => {
+  const [fanlar, setFanlar] = useState([]); // Fanlar uchun bo'sh array
   const [fanNomi, setFanNomi] = useState('');
   const [adminNomi, setAdminNomi] = useState('');
   const [adminParoli, setAdminParoli] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
-  const [fanlar, setFanlar] = useState([]); // Fan va admin ma'lumotlari uchun state
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Local storage'da tokenni tekshirish
     const token = localStorage.getItem('token');
-
-    // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
     if (!token) {
-      navigate('/login'); // Login sahifasining yo'li
+      navigate('/login');
     } else {
-      // Token mavjud bo'lsa, barcha fanlarni olish
-      fetchFanlar();
+      // API orqali fanlarni olish
+      axios
+        .get('http://localhost:5000/api/fan/adminFan', { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+          // Fanlarni state ga yuklash
+          setFanlar(response.data);
+        })
+        .catch((error) => {
+          console.error('Fanlar olishda xatolik:', error);
+        });
     }
   }, [navigate]);
 
-  // Barcha fanlarni olish funksiyasi
-  const fetchFanlar = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/fan/adminFan');
-      console.log(response.data);
-      
-      setFanlar(response.data.fanlar); // Fanlar va adminlarni state'ga o'rnatish
-    } catch (error) {
-      console.error('Fanlar va adminlarni olishda xatolik:', error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Ma'lumotlarni tekshirish
     if (!fanNomi || !adminNomi || !adminParoli || !adminEmail) {
       alert("Iltimos, barcha maydonlarni to'ldiring.");
       return;
@@ -55,13 +46,10 @@ const CreateFan = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/fan/create', fanData);
       alert(response.data.message);
-      // Formani tozalash
       setFanNomi('');
       setAdminNomi('');
       setAdminParoli('');
       setAdminEmail('');
-      // Yangi fan yaratildi, fanlar ro'yxatini yangilash
-      fetchFanlar();
     } catch (error) {
       console.error('Xatolik:', error);
       alert('Fanni yaratishda xatolik yuz berdi.');
@@ -124,23 +112,22 @@ const CreateFan = () => {
         </button>
       </form>
 
-      {/* Fan va admin ma'lumotlarini ko'rsatish */}
+      {/* Fanlar ro'yxati */}
       <div className="mt-10">
-        <h3 className="text-xl font-bold mb-4">Fanlar va Adminlar Ro'yxati</h3>
-        {fanlar && fanlar.length > 0 ? (
-  <ul className="space-y-4">
-    {fanlar.map((fan) => (
-      <li key={fan._id} className="p-4 border border-gray-300 rounded-lg shadow-md">
-        <h4 className="text-lg font-semibold">Fan: {fan.fanNomi}</h4>
-        <p>Admin Nomi: {fan.adminNomi}</p>
-        <p>Admin Email: {fan.adminEmail}</p>
-      </li>
-    ))}
-  </ul>
-) : (
-  <p>Hozircha fanlar mavjud emas.</p>
-)}
-
+        <h3 className="text-xl font-bold mb-4">Fanlar va Adminlar</h3>
+        {fanlar.length > 0 ? (
+          <ul className="space-y-4">
+            {fanlar.map((fan) => (
+              <li key={fan._id} className="p-4 border border-gray-300 rounded-lg shadow-md">
+                <h4 className="text-lg font-semibold">Fan: {fan.fanNomi}</h4>
+                <p>Admin Nomi: {fan.adminNomi}</p>
+                <p>Admin Email: {fan.adminEmail}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Hozircha fanlar mavjud emas.</p>
+        )}
       </div>
     </div>
   );
