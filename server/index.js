@@ -20,7 +20,15 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors()); // CORS uchun
+const corsOptions = {
+    origin: 'http://localhost:5173', // Frontend ilovangiz joylashgan manzil
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Ruxsat etilgan HTTP metodlar
+    allowedHeaders: ['Content-Type', 'Authorization'], // Ruxsat etilgan headerlar
+    credentials: true, // Cookie'lar bilan ishlash uchun
+  };
+  
+  // CORS middleware'ni ishlatish
+  app.use(cors(corsOptions));
 app.use(express.json()); // JSON formatdagi ma'lumotlarni olish uchun
 app.use(express.urlencoded({ extended: true })); // URL-encoded ma'lumotlarni olish uchun
 
