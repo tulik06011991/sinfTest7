@@ -36,7 +36,30 @@ const getResultsByFanId = async (req, res) => {
     }
 };
 
-module.exports = { getResultsByFanId };
 
 
-module.exports = { getResultsByFanId };
+// User ID orqali natijalarni o'chirish
+const deleteUserResults = async (req, res) => {
+    try {
+        const {userId} = req.params.userId;
+        console.log(userId);
+        
+
+        // Foydalanuvchiga tegishli natijalarni topib o'chirish
+        const deletedResults = await Result.deleteMany({ userId });
+
+        if (deletedResults.deletedCount === 0) {
+            return res.status(404).json({ message: 'Ushbu foydalanuvchining natijalari topilmadi.' });
+        }
+
+        return res.status(200).json({ message: 'Foydalanuvchining barcha natijalari muvaffaqiyatli o\'chirildi.' });
+    } catch (error) {
+        console.error('Natijalarni o\'chirishda xatolik:', error);
+        return res.status(500).json({ message: 'Natijalarni o\'chirishda server xatosi yuz berdi.' });
+    }
+};
+
+
+
+
+module.exports = { getResultsByFanId, deleteUserResults };
