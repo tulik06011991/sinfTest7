@@ -1,13 +1,17 @@
 const Question = require('../models/Questions');  // Question modelini import qilish
 const Option = require('../models/Options');      // Option modelini import qilish
 
-     // Option modelini import qilish
-
 // Savollar va variantlarni olish controlleri
 const getQuestionsByFanId = async (req, res) => {
     const { fanId } = req.params; // frontenddan yuborilgan fanId params orqali olinadi
+console.log(fanId);
 
     try {
+        // fanId ning null yoki undefined bo'lishini tekshirish
+        if (!fanId || fanId =='null') {
+            return res.status(400).json({ message: 'fanId qiymati noto\'g\'ri yoki mavjud emas' });
+        }
+
         // Berilgan fanId ga mos savollarni olish
         const questions = await Question.find({ fanId });
 
@@ -34,5 +38,3 @@ const getQuestionsByFanId = async (req, res) => {
 module.exports = {
     getQuestionsByFanId,
 };
-
-
