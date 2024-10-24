@@ -165,7 +165,7 @@ const AdminDashboard = () => {
                                 {Array.isArray(results) && results.map((result) => (
                                     <tr key={result._id}>
                                         <td className="py-2 px-4 border-b">{result.userName || 'Noma'}</td>
-                                        <td className="py-2 px-4 border-b">{result.score || 0}</td>
+                                        <td className="py-2 px-4 border-b">{result.correctCount || 0}</td>
                                         <td className="py-2 px-4 border-b">{result.totalQuestions || 0}</td>
                                         <td className="py-2 px-4 border-b">{result.correctAnswers || 0}</td>
                                         <td className="py-2 px-4 border-b">
