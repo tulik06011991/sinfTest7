@@ -38,7 +38,6 @@ const AdminDashboard = () => {
     const fetchResults = async () => {
         const token = localStorage.getItem('token');
         setLoading(true);
-        setError('');
         try {
             const response = await axios.get(`http://localhost:5000/api/results/${fanId}`, {
                 headers: {
@@ -47,8 +46,11 @@ const AdminDashboard = () => {
             });
             console.log(response.data); // Natijalar strukturasini ko'rish
             setResults(response.data);
+            if (response.data.length === 0) {
+                setResults([{ userName: 'Ma\'lumot yo\'q', correctCount: 0, totalQuestions: 0, correctAnswers: 0 }]);
+            }
         } catch (err) {
-            setError('Natijalarni yuklashda xato.');
+            setResults([{ userName: 'Ma\'lumot yo\'q', correctCount: 0, totalQuestions: 0, correctAnswers: 0 }]);
         }
         setLoading(false);
     };
@@ -77,7 +79,6 @@ const AdminDashboard = () => {
         
         const token = localStorage.getItem('token');
         setLoading(true);
-        setError('');
         try {
             await axios.delete(`http://localhost:5000/api/results/${userId}`, {
                 headers: {
@@ -85,9 +86,8 @@ const AdminDashboard = () => {
                 },
             });
             setResults(results.filter(result => result._id !== userId)); // O'chirilgan foydalanuvchini natijalar ro'yxatidan chiqarish
-            setError('Foydalanuvchi natijasi muvaffaqiyatli o\'chirildi.');
         } catch (err) {
-            setError('Natijani o\'chirishda xato.');
+            // Xatoni ko'rsatmasdan davom etish
         }
         setLoading(false);
     };
@@ -151,7 +151,6 @@ const AdminDashboard = () => {
                         Natijalarni Ko'rish
                     </button>
                     {loading && <p className="text-center">Yuklanmoqda...</p>}
-                    {error && <p className="text-red-500">{error}</p>}
                     <div className="mt-4 overflow-x-auto">
                         <table className="min-w-full bg-white border border-gray-300">
                             <thead>
@@ -164,7 +163,7 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                            {Array.isArray(results) && results.map((result, index) => (
+                                {Array.isArray(results) && results.map((result, index) => (
                                     <tr key={result._id || index}>
                                         <td className="py-2 px-4 border-b">{result.userName || 'Noma'}</td>
                                         <td className="py-2 px-4 border-b">{result.correctCount || 0}</td>
