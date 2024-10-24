@@ -172,7 +172,7 @@ const AdminDashboard = () => {
                                         <td className="py-2 px-4 border-b">{result.correctAnswers || 0}</td>
                                         <td className="py-2 px-4 border-b">
                                             <button
-                                                onClick={() => handleDeleteUserResult(result._id)} // O'chirish tugmasi
+                                                onClick={() => handleDeleteUserResult(result.userId._id)} // O'chirish tugmasi
                                                 className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition duration-200"
                                             >
                                                 O'chirish

@@ -20,7 +20,8 @@ const getResultsByFanId = async (req, res) => {
 
         // Natijalarni formatlash
         const formattedResults = results.map(result => ({
-            userName: result.userId ? result.userId.username : 'Noma', // Foydalanuvchi ismini olish
+            userId: result.userId, // Foydalanuvchi ismini olish
+            userName: result.userId ? result.userId.username : 'Noma',
             correctCount: result.correctCount,
             totalQuestions: result.totalQuestions,
             score: result.score,
@@ -41,7 +42,7 @@ const getResultsByFanId = async (req, res) => {
 // User ID orqali natijalarni o'chirish
 const deleteUserResults = async (req, res) => {
     try {
-        const {userId} = req.params.userId;
+        const {userId} = req.params;
         console.log(userId);
         
 
