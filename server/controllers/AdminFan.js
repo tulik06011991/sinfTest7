@@ -34,5 +34,27 @@ const createFan = async (req, res) => {
   }
 };
 
+ // Fan modelini import qilish
 
-module.exports = { createFan };
+// Barcha fanlarni olish controller'i
+ const getAllFans = async (req, res) => {
+    try {
+        // Barcha fanlarni olish
+        const fanlar = await Fan.find();
+
+        // Agar fanlar bo'lmasa
+        if (!fanlar.length) {
+            return res.status(404).json({ message: 'Fanlar topilmadi!' });
+        }
+
+        // Muvaffaqiyatli javob
+        res.status(200).json(fanlar);
+    } catch (error) {
+        // Xatolik yuz bersa
+        res.status(500).json({ message: 'Serverda xatolik yuz berdi!', error });
+    }
+};
+
+
+
+module.exports = { createFan, getAllFans };
