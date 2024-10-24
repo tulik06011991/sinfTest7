@@ -73,6 +73,8 @@ const AdminDashboard = () => {
 
     // Foydalanuvchini natijalaridan o'chirish funksiyasi
     const handleDeleteUserResult = async (userId) => {
+        console.log(userId);
+        
         const token = localStorage.getItem('token');
         setLoading(true);
         setError('');
@@ -162,8 +164,8 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(results) && results.map((result) => (
-                                    <tr key={result._id}>
+                            {Array.isArray(results) && results.map((result, index) => (
+                                    <tr key={result._id || index}>
                                         <td className="py-2 px-4 border-b">{result.userName || 'Noma'}</td>
                                         <td className="py-2 px-4 border-b">{result.correctCount || 0}</td>
                                         <td className="py-2 px-4 border-b">{result.totalQuestions || 0}</td>
