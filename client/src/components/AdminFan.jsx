@@ -17,11 +17,11 @@ const CreateFan = () => {
       navigate('/login');
     } else {
       // Fanlar va adminlarni olish
-      axios.get('http://localhost:5000/api/fan/adminFan', { headers: { Authorization: `Bearer ${token}` } })
+      axios.get('https://sinftest7-knh5.onrender.com/api/fan/adminFan', { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => setFanlar(response.data))
         .catch((error) => console.error('Fanlarni olishda xatolik:', error));
 
-      axios.get('http://localhost:5000/admin/admins', { headers: { Authorization: `Bearer ${token}` } })
+      axios.get('https://sinftest7-knh5.onrender.com/admin/admins', { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => setAdminlar(response.data))
         .catch((error) => console.error('Adminlarni olishda xatolik:', error));
     }
@@ -37,7 +37,7 @@ const CreateFan = () => {
     const fanData = { fanNomi, adminNomi, adminEmail };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/fan/create', fanData);
+      const response = await axios.post('https://sinftest7-knh5.onrender.com/api/fan/create', fanData);
       alert(response.data.message);
       setFanNomi('');
       setAdminNomi('');

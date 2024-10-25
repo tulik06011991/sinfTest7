@@ -16,7 +16,7 @@ const QuizComponent = () => {
     useEffect(() => {
         const getFanlar = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/test/fanlar");
+                const response = await axios.get("https://sinftest7-knh5.onrender.com/test/fanlar");
                 setFanlar(response.data);
             } catch (error) {
                 console.error("Fanlarni olishda xatolik yuz berdi.");
@@ -43,7 +43,7 @@ const QuizComponent = () => {
     const handleFanChange = async (fanId) => {
         setSelectedFan(fanId);
         try {
-            const response = await axios.get(`http://localhost:5000/test/savollar/${fanId}`);
+            const response = await axios.get(`https://sinftest7-knh5.onrender.com/test/savollar/${fanId}`);
             setSavollar(response.data);
             setAnswers({}); // Yangi fan tanlanganda javoblarni tozalash
         } catch (error) {
@@ -67,7 +67,7 @@ const QuizComponent = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:5000/test/tekshirJavoblar", {
+            const response = await axios.post("https://sinftest7-knh5.onrender.com/test/tekshirJavoblar", {
                 fanId: selectedFan, // fanId ni qo'shamiz
                 userId, // userId ni qo'shamiz
                 answers: Object.keys(answers).map((questionId) => ({

@@ -14,7 +14,7 @@ const Login = () => {
 
         try {
             const userData = { email, password };
-            const response = await axios.post("http://localhost:5000/auth/login", userData);
+            const response = await axios.post("https://sinftest7-knh5.onrender.com/auth/login", userData);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("url", response.data.redirectUrl);
             localStorage.setItem('fanId', response.data.fanId)
