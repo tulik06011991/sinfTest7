@@ -22,7 +22,7 @@ app.timeout = 300000;
 
 // Middleware
 const corsOptions = {
-    origin: 'http://localhost:5173', // Frontend ilovangiz joylashgan manzil
+    origin: '*', // Frontend ilovangiz joylashgan manzil
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Ruxsat etilgan HTTP metodlar
     allowedHeaders: ['Content-Type', 'Authorization'], // Ruxsat etilgan headerlar
     credentials: true, // Cookie'lar bilan ishlash uchun
