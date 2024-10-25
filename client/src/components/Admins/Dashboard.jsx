@@ -22,7 +22,7 @@ const AdminDashboard = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get(`http://localhost:5000/api/questions/${fanId}`, {
+            const response = await axios.get(`https://sinftest7-knh5.onrender.com/api/questions/${fanId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,  // Tokenni yuborish
                 },
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token');
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/api/results/${fanId}`, {
+            const response = await axios.get(`https://sinftest7-knh5.onrender.com/api/results/${fanId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,  // Tokenni yuborish
                 },
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
         setLoading(true);
         setError('');
         try {
-            await axios.delete(`http://localhost:5000/api/fan/${fanId}`, {
+            await axios.delete(`https://sinftest7-knh5.onrender.com/api/fan/${fanId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,  // Tokenni yuborish
                 },
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token');
         setLoading(true);
         try {
-            await axios.delete(`http://localhost:5000/api/results/${userId}`, {
+            await axios.delete(`https://sinftest7-knh5.onrender.com/api/results/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,  // Tokenni yuborish
                 },

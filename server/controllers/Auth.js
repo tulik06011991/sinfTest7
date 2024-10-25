@@ -2,7 +2,8 @@ const User = require('../models/Auth');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin'); // Admin modeli
   // User modeli
-const Fan = require('../models/Subject');     // Fan modeli
+const Fan = require('../models/Subject');
+     // Fan modeli
 
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
