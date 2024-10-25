@@ -10,12 +10,12 @@ const AdminDashboard = () => {
     const fanId = localStorage.getItem('fanId');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-        }
-    }, [navigate]);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (!token) {
+    //         navigate('/login');
+    //     }
+    // }, [navigate]);
 
     const fetchQuestions = async () => {
         const token = localStorage.getItem('token');

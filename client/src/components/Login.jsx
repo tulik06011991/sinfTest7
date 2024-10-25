@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false); // Loader uchun state
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Loader uchun state
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -21,11 +23,11 @@ const Login = () => {
 
             const redirectUrl = response.data.redirectUrl;
             if (redirectUrl === "/superadmin/dashboard") {
-                window.location.href = "/superadmin";
+                navigate("/superadmin");
             } else if (redirectUrl === "/admin/dashboard") {
-                window.location.href = "/admindashbaord";
-            }else {
-                window.location.href = "/test";
+                navigate("/admindashbaord"); // typo: "admindashbaord" bo'lishi kerak "admindashboard"
+            } else {
+                navigate("/test");
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : "Server xatosi!");
