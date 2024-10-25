@@ -18,6 +18,7 @@ dotenv.config();
 
 // Express ilovasini yaratish
 const app = express();
+app.timeout = 300000;
 
 // Middleware
 const corsOptions = {

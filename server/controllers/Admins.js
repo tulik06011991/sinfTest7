@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 exports.createAdmin = async (req, res) => {
     const { name, email, password, role, subject } = req.body;
+    
 
     try {
         // Admin mavjudligini tekshirish
