@@ -15,7 +15,7 @@ const Register = () => {
 
         try {
             const userData = { username, email, password };
-            const response = await axios.post('https://sinftest7-knh5.onrender.com/auth/register', userData);
+            const response = await axios.post('https://sinftest7-k14w.onrender.com/auth/register', userData);
             console.log(response.data); // Ro'yxatdan o'tgan foydalanuvchi ma'lumotlarini ko'rish
             
             // Muvaffaqiyatli ro'yxatdan o'tgandan so'ng, login sahifasiga yo'naltirish

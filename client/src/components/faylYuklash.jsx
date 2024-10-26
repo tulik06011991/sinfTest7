@@ -37,7 +37,7 @@ const FileUpload = () => {
         setLoading(true); // Yuklashni boshlanganda loading holatini yoqing
 
         try {
-            const res = await axios.post('https://sinftest7-knh5.onrender.com/api/quiz/upload', formData, {
+            const res = await axios.post('https://sinftest7-k14w.onrender.com/api/quiz/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

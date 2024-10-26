@@ -14,7 +14,7 @@ const SuperAdminPanel = () => {
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const response = await axios.get("https://sinftest7-knh5.onrender.com/users");
+                const response = await axios.get("https://sinftest7-k14w.onrender.com/users");
                 setUsers(response.data);
             } catch (error) {
                 console.error("Foydalanuvchilarni olishda xatolik yuz berdi.");
@@ -27,8 +27,8 @@ const SuperAdminPanel = () => {
     // useEffect(() => {
     //     const getAdminsAndFans = async () => {
     //         try {
-    //             const adminsResponse = await axios.get("https://sinftest7-knh5.onrender.com/admins");
-    //             const fansResponse = await axios.get("https://sinftest7-knh5.onrender.com/fans");
+    //             const adminsResponse = await axios.get("https://sinftest7-k14w.onrender.com/admins");
+    //             const fansResponse = await axios.get("https://sinftest7-k14w.onrender.com/fans");
     //             setAdmins(adminsResponse.data);
     //             setFans(fansResponse.data);
     //         } catch (error) {
@@ -41,7 +41,7 @@ const SuperAdminPanel = () => {
     // Yangi foydalanuvchi qo'shish
     const addUser = async () => {
         try {
-            const response = await axios.post("https://sinftest7-knh5.onrender.com/users", newUser);
+            const response = await axios.post("https://sinftest7-k14w.onrender.com/users", newUser);
             setUsers([...users, response.data]);
             setNewUser({ name: '', email: '' }); // Formani tozalash
         } catch (error) {
@@ -52,7 +52,7 @@ const SuperAdminPanel = () => {
     // Foydalanuvchini yangilash
     const updateUser = async (userId) => {
         try {
-            const response = await axios.put(`https://sinftest7-knh5.onrender.com/users/${userId}`, selectedUser);
+            const response = await axios.put(`https://sinftest7-k14w.onrender.com/users/${userId}`, selectedUser);
             setUsers(users.map((user) => (user._id === userId ? response.data : user)));
             setSelectedUser(null);
         } catch (error) {
@@ -63,7 +63,7 @@ const SuperAdminPanel = () => {
     // Foydalanuvchini o'chirish
     const deleteUser = async (userId) => {
         try {
-            await axios.delete(`https://sinftest7-knh5.onrender.com/users/${userId}`);
+            await axios.delete(`https://sinftest7-k14w.onrender.com/users/${userId}`);
             setUsers(users.filter((user) => user._id !== userId));
         } catch (error) {
             console.error("Foydalanuvchini o'chirishda xatolik yuz berdi.");

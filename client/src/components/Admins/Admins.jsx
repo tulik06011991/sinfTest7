@@ -28,7 +28,7 @@ const AdminCRUD = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get("https://sinftest7-knh5.onrender.com/admin/admins");  
+        const response = await axios.get("https://sinftest7-k14w.onrender.com/admin/admins");  
         console.log(response.data)
         
         setAdmins(response.data);
@@ -54,7 +54,7 @@ const AdminCRUD = () => {
 
     if (editing) {
       try {
-        await axios.put(`https://sinftest7-knh5.onrender.com/admin/admin/${currentAdminId}`, formData);
+        await axios.put(`https://sinftest7-k14w.onrender.com/admin/admin/${currentAdminId}`, formData);
         setMessage("Admin muvaffaqiyatli yangilandi!");
         setAdmins(
           admins.map((admin) =>
@@ -74,7 +74,7 @@ const AdminCRUD = () => {
       }
     } else {
       try {
-        const response = await axios.post("https://sinftest7-knh5.onrender.com/admin/admin", formData);
+        const response = await axios.post("https://sinftest7-k14w.onrender.com/admin/admin", formData);
         setAdmins([...admins, response.data]);
         setMessage("Admin muvaffaqiyatli yaratildi!");
         setFormData({
@@ -92,7 +92,7 @@ const AdminCRUD = () => {
 
   const deleteAdmin = async (id) => {
     try {
-      await axios.delete(`https://sinftest7-knh5.onrender.com/admin/admin/${id}`);
+      await axios.delete(`https://sinftest7-k14w.onrender.com/admin/admin/${id}`);
       setAdmins(admins.filter((admin) => admin._id !== id));
       setMessage("Admin muvaffaqiyatli o'chirildi!");
     } catch (error) {
