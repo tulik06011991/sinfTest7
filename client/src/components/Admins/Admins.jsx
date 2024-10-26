@@ -28,7 +28,7 @@ const AdminCRUD = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get("https://sinftest7-knh5.onrender.com/admin/admins");
+        const response = await axios.get("https://sinftest7-knh5.onrender.com/admin/admins");  
         console.log(response.data)
         
         setAdmins(response.data);
