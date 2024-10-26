@@ -14,24 +14,31 @@ exports.getFanlar = async (req, res) => {
 };
 
 // Tanlangan fan bo'yicha savollarni va variantlarini olish
+// Tasodifiy aralashtiruvchi funksiya
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+
 exports.getSavollarByFan = async (req, res) => {
     const { fanId } = req.params;
 
     try {
         // Fan bilan bog'liq savollarni olish
-        const savollar = await Question.find({ fanId }).populate('fanId');
+        let savollar = await Question.find({ fanId }).populate('fanId');
 
-        // Har bir savolga oid variantlarni olish va tasodifiy tartibda aralashtirish
+        // Har bir savolga oid variantlarni olish va aralashtirish
         const questionsWithOptions = await Promise.all(savollar.map(async (savol) => {
-            const options = await Option.find({ question: savol._id });
-
-            // Variantlarni tasodifiy tartibda aralashtirish
-            const shuffledOptions = shuffleArray(options);
+            let options = await Option.find({ question: savol._id });
+            options = shuffleArray(options); // Variantlarni aralashtirish
 
             return {
                 questionId: savol._id,
                 questionText: savol.questionText,
-                options: shuffledOptions.map(option => ({
+                options: options.map(option => ({
                     _id: option._id,
                     optionText: option.optionText,
                     isCorrect: option.isCorrect
@@ -39,14 +46,15 @@ exports.getSavollarByFan = async (req, res) => {
             };
         }));
 
-        // Savollarni tasodifiy tartibda aralashtirish
-        const shuffledQuestionsWithOptions = shuffleArray(questionsWithOptions);
+        // Savollarning tartibini ham aralashtirish
+        const shuffledQuestions = shuffleArray(questionsWithOptions);
 
-        res.status(200).json(shuffledQuestionsWithOptions);
+        res.status(200).json(shuffledQuestions);
     } catch (error) {
         res.status(500).json({ message: "Savollarni olishda xatolik yuz berdi!" });
     }
 };
+
 
 
 
