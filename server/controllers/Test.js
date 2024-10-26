@@ -21,13 +21,17 @@ exports.getSavollarByFan = async (req, res) => {
         // Fan bilan bog'liq savollarni olish
         const savollar = await Question.find({ fanId }).populate('fanId');
 
-        // Har bir savolga oid variantlarni olish
+        // Har bir savolga oid variantlarni olish va tasodifiy tartibda aralashtirish
         const questionsWithOptions = await Promise.all(savollar.map(async (savol) => {
             const options = await Option.find({ question: savol._id });
+
+            // Variantlarni tasodifiy tartibda aralashtirish
+            const shuffledOptions = shuffleArray(options);
+
             return {
                 questionId: savol._id,
                 questionText: savol.questionText,
-                options: options.map(option => ({
+                options: shuffledOptions.map(option => ({
                     _id: option._id,
                     optionText: option.optionText,
                     isCorrect: option.isCorrect
@@ -35,7 +39,10 @@ exports.getSavollarByFan = async (req, res) => {
             };
         }));
 
-        res.status(200).json(questionsWithOptions);
+        // Savollarni tasodifiy tartibda aralashtirish
+        const shuffledQuestionsWithOptions = shuffleArray(questionsWithOptions);
+
+        res.status(200).json(shuffledQuestionsWithOptions);
     } catch (error) {
         res.status(500).json({ message: "Savollarni olishda xatolik yuz berdi!" });
     }
